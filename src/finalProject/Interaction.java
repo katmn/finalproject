@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +32,7 @@ public class Interaction extends JFrame implements ActionListener {
 	private Characters winner = new Characters(0, 0, 0, 0, 0, 0, "Castle Master");
 	private String answer = null;
 	private boolean questionReady = false;
+	private Random rand = new Random();
 
 	/**
 	 * @return the questionReady
