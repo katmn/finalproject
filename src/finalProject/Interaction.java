@@ -427,17 +427,12 @@ public class Interaction extends JFrame implements ActionListener {
 		 * created variables for the player options, questions, answers, and
 		 * statements.
 		 */
-		int option = 0;
-		String statement = null;
+				String statement = null;
 		String question = null;
 		answer = null;
-		int dice = rand.nextInt(20);
+		int option = rand.nextInt(3);
+		System.out.println(option);
 
-		if (dice < 3) {
-			option = dice;
-		} else {
-			option = dice % 3;
-		}
 		/*
 		 * checks the results of the option calculation, then displays the
 		 * result of the obstacle the player has encountered. the first obstacle
@@ -452,7 +447,7 @@ public class Interaction extends JFrame implements ActionListener {
 			 * option 1 is a box that uses Outpost() to help determine the
 			 * outcome.
 			 */
-		} else if (option == 1) {
+		} else if (option == 2) {
 			setQuestionReady(false);
 			while (!isQuestionReady()) {
 				question = "You have found a mysterious box, would you like to open it?";
@@ -472,48 +467,41 @@ public class Interaction extends JFrame implements ActionListener {
 				statement = "Then the box remains a mystery.";
 
 			}
-
+		}
 			/*
 			 * option 2 is a witch with a potion, Outpost() is initialized if
 			 * the dice is an even number, otherwise the potion is poisonous and
 			 * the player loses health.
-			 */else {
-				 setQuestionReady(false);
-				 	 
-				 while (!isQuestionReady()) {
-					question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
-					questionPanel(question);
+			 */else if (option == 1){
+				 System.out.println(question + isQuestionReady());
+					setQuestionReady(false);
+					while (!isQuestionReady()) {
+						question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
+						questionPanel(question);
 					}
-
-				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
-					if ((rand.nextInt(10) > 5)) {
-						statement = this.Outpost(player);
-					} else {
-						// player loses health from the poison
-						player.setHealth(player.getHealth() - 3);
-						// verifies if the player is still alive. If not, they
-						// are sent to the graveyard.
-						if (player.getHealth() < 1) {
-							graveyard.add(player.getName());
-							player.setPositionRow(0);
-							player.setPositionRow(0);
-							statement = "The potion was poisonous and has killed you, you are now in the graveyard.";
+					if (isQuestionReady() && getAnswer().equals("Yes")) {
+						int newStrength = rand.nextInt(10)+1;
+						if ((rand.nextInt(2) == 1)) {
+							player.setStrength(newStrength + player.getStrength());
+							statement = "It was a power potion gave you " + newStrength + " strength points.";
+							statementPanel(statement);
 						} else {
-							statement = "The potion was poisonous and your health is now " + player.getHealth();
+							player.setStrength(newStrength - player.getStrength());
+							statement = "The potion was poisonous that weakened you by " + newStrength + " strength points.";
+							statementPanel(statement);
 						}
+
+					} else if (isQuestionReady() && getAnswer().equalsIgnoreCase("No")) {
+						statement = "Wise choice, she looked shifty";
+						statementPanel(statement);
 					}
-					// returns a statement if the player answers no
-				} else if (answer.equalsIgnoreCase("no")) {
-					statement = "Wise choice, she looked shifty";
-				} else {
-					statement = "I do not understand your answer.";
-				}
-				statementPanel(statement);
+				
+					
 				// prints the result of the while statement.
 
 			}
 		}
-	}
+	
 
 	public void Castle(Characters player) {
 		/*
