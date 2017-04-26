@@ -1,11 +1,20 @@
 package finalProject;
 
 public class Kingdom {
+	private int numPlayers = 0;
 	private int dice;
 	private int diceRange;
 	private int positionRow;
 	private int positionCol;
 	
+	Characters[] chars = new Characters[numPlayers];
+	
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+	public void setNumPlayers(int newNumPlayers) {
+		this.numPlayers = newNumPlayers;
+	}
 	public int getDice() {
 		return dice;
 	}
@@ -59,7 +68,7 @@ public class Kingdom {
 			//check player status
 				//if anyone is dead, add to graveyard
 				//if 1 person remains, they win
-			//give each player a turn
+			//give each alive player a turn
 				//"[NAME] is about to start their turn" pop up
 				//change character information
 				//roll dice
