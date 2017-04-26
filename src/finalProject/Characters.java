@@ -15,8 +15,15 @@ public class Characters implements Comparable {
     private int positionRow;
     private int positioncolumn;
     private String name;
+    
 
-    public  Characters(int health, int strength, int dexterity, int speed, int positionRow, int positioncolumn, String name){
+    public Characters() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public  Characters(int health, int strength, int dexterity, int speed, int positionRow, int positioncolumn, String name){
         this.health = health;
         this.strength = strength;
         this.dexterity = dexterity;
