@@ -144,6 +144,7 @@ public class Interaction extends JFrame implements ActionListener {
 
 	private void statementPanel(String statement) {
 		inputPanel.removeAll();
+		messagePanel.removeAll();
 		this.setQuestionReady(false);
 		this.setAnswer(null);
 		messageField.setText(statement);
@@ -160,6 +161,7 @@ public class Interaction extends JFrame implements ActionListener {
 		this.setQuestionReady(false);
 		this.setAnswer(null);
 		inputPanel.removeAll();
+		messagePanel.removeAll();
 		messageField.setText(question);
 		messagePanel.add(messageField);
 		inputPanel.add(yesBtn);
@@ -205,7 +207,7 @@ public class Interaction extends JFrame implements ActionListener {
 	 * Battle() class. Takes in 2 Characters and the dice values to create
 	 * combat between players that modifies the players position and health.
 	 */
-	public void Battle(Characters player, Characters opponent, int dice) {
+	public void Battle(Characters player, Characters opponent) {
 		
 		// variables to track and modify player attributes.
 		int playerPosition = player.getPositionRow();
@@ -221,10 +223,10 @@ public class Interaction extends JFrame implements ActionListener {
 		String question = null;
 		answer = null;
 		String statement = null;
-		int mode = 0;		
+		
+		int mode = rand.nextInt(2);		
 
-		// determines whether the dice is even or odd.
-			mode = dice % 2;
+		
 			/*
 			 * Uses the results of the mode setting to determine which question
 			 * to ask the user.
@@ -246,7 +248,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * rows they will only retreat 1 space backwards.
 				 */
 				if (playerPosition > 5) {
-					move = (((move * dice) % 3) + 1 + mode);
+					move = (rand.nextInt(3) + 1);
 					playerPosition -= move;
 					player.setPositionRow(playerPosition);
 					statement = "You have retreated " + move + " spaces.";
@@ -341,7 +343,7 @@ public class Interaction extends JFrame implements ActionListener {
 	 * Outpost() creates something for the user and returns a statement
 	 * regarding how it impacts them.
 	 */
-	public String Outpost(Characters player, int dice) {
+	public String Outpost(Characters player) {
 
 		/*
 		 * Creates variables for storing the option that the user is presented
@@ -352,6 +354,7 @@ public class Interaction extends JFrame implements ActionListener {
 		String object = null;
 		String statement = null;
 		answer = null;
+		int dice = rand.nextInt(20);
 
 		/*
 		 * if the dice is over the number 4, the reward is set to the modulus of
@@ -418,7 +421,7 @@ public class Interaction extends JFrame implements ActionListener {
 		return statement;
 	}
 
-	public void Obstacle(Characters player, int dice) {
+	public void Obstacle(Characters player) {
 
 		/*
 		 * created variables for the player options, questions, answers, and
@@ -428,6 +431,7 @@ public class Interaction extends JFrame implements ActionListener {
 		String statement = null;
 		String question = null;
 		answer = null;
+		int dice = rand.nextInt(20);
 
 		if (dice < 3) {
 			option = dice;
@@ -456,8 +460,8 @@ public class Interaction extends JFrame implements ActionListener {
 			}
 			if (isQuestionReady() && getAnswer().equals("Yes")) {
 
-				if ((dice * player.getPositioncolumn()) % 2 == 0) {
-					statement = this.Outpost(player, dice);
+				if ((rand.nextInt(2) == 1)) {
+					statement = this.Outpost(player);
 					statementPanel(statement);
 				} else {
 					statement = "The box is empty";
@@ -475,16 +479,15 @@ public class Interaction extends JFrame implements ActionListener {
 			 * the player loses health.
 			 */else {
 				 setQuestionReady(false);
-				 
-				 
+				 	 
 				 while (!isQuestionReady()) {
 					question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
 					questionPanel(question);
 					}
 
 				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
-					if (((dice * player.getHealth()) % 2) == 0) {
-						statement = this.Outpost(player, dice);
+					if ((rand.nextInt(10) > 5)) {
+						statement = this.Outpost(player);
 					} else {
 						// player loses health from the poison
 						player.setHealth(player.getHealth() - 3);
@@ -555,9 +558,10 @@ public class Interaction extends JFrame implements ActionListener {
 		Characters player2 = new Characters(50, 150, 10, 20, 1, 3, "John 2");
 		Interaction gameplay = new Interaction();
 
-		gameplay.Castle(player2);
-		//	gameplay.Outpost(player1, 17);
-		gameplay.Battle(player2, player1, 15);
+		//	gameplay.Castle(player2);
+		//	gameplay.Outpost(player1);
+		gameplay.Obstacle(player1);
+		//	gameplay.Battle(player2, player1);
 	}
 
 }
