@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,9 +29,10 @@ public class Interaction extends JFrame implements ActionListener {
 	// creates a String array list for holding the names of players of have died
 	// in the game
 	private ArrayList<String> graveyard = new ArrayList<String>();
-	private Characters winner = new Characters(0, 0, 0, 0, 0, 0, "Castle Master");
+	private Characters winner = new Characters();
 	private String answer = null;
 	private boolean questionReady = false;
+	private Random rand = new Random();
 
 	/**
 	 * @return the questionReady
@@ -109,7 +112,6 @@ public class Interaction extends JFrame implements ActionListener {
 		this.graveyard = graveyard;
 	}
 
-
 	/**
 	 * @return the winner
 	 */
@@ -140,12 +142,10 @@ public class Interaction extends JFrame implements ActionListener {
 	}
 
 	private void statementPanel(String statement) {
-		if(inputPanel!= null)
-			{
+		if (inputPanel != null) {
 			inputPanel.removeAll();
-			}
-		if(messagePanel!= null)
-		{
+		}
+		if (messagePanel != null) {
 			messagePanel.removeAll();
 		}
 		this.setQuestionReady(false);
@@ -161,21 +161,20 @@ public class Interaction extends JFrame implements ActionListener {
 	}
 
 	private void questionPanel(String question) {
-		if(isQuestionReady()){
+		if (isQuestionReady()) {
 			this.setQuestionReady(false);
 		}
-		if(getAnswer()!=null){
+		if (getAnswer() != null) {
 			this.setAnswer(null);
 		}
-		if(inputPanel!= null)
-		{
-		inputPanel.removeAll();
+		if (inputPanel != null) {
+			inputPanel.removeAll();
 		}
 		messageField.setText(question);
 		messagePanel.add(messageField);
 		inputPanel.add(yesBtn);
 		inputPanel.add(noBtn);
-		questionPanel.add(messageField);
+		questionPanel.add(messagePanel);
 		questionPanel.add(inputPanel);
 		mainPanel.add(questionPanel);
 		buildPanel();
@@ -194,7 +193,7 @@ public class Interaction extends JFrame implements ActionListener {
 		if (graveyard.get(1) != null) {
 			JLabel player1 = new JLabel(graveyard.get(1));
 			graveyardPanel.add(player1);
-			
+
 		}
 		if (graveyard.get(2) != null) {
 			JLabel player2 = new JLabel(graveyard.get(2));
@@ -216,14 +215,16 @@ public class Interaction extends JFrame implements ActionListener {
 	 * Battle() class. Takes in 2 Characters and the dice values to create
 	 * combat between players that modifies the players position and health.
 	 */
-	public void Battle(Characters player, Characters opponent, int dice) {
-		
+	public void Battle(Characters player, Characters opponent) {
+
 		// variables to track and modify player attributes.
 		int playerPosition = player.getPositionRow();
 		int playerHealth = player.getHealth();
+		int dice = rand.nextInt(20);
 
 		// sets the outcome of the battle
-		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed())) - (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
+		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
+				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
 
 		// sets how far the player will move in the game.
 		int move = 0;
@@ -232,98 +233,107 @@ public class Interaction extends JFrame implements ActionListener {
 		String question = null;
 		answer = null;
 		String statement = null;
-		int mode = 0;		
+		int mode = 0;
 
 		// determines whether the dice is even or odd.
-			mode = dice % 2;
+		mode = dice % 2;
+		/*
+		 * Uses the results of the mode setting to determine which question to
+		 * ask the user.
+		 */
+		if (mode == 1) {
+			question = "You have encountered " + opponent.getName() + " would you like to battle them?";
+		} else {
+			question = "You have been attacked by " + opponent.getName() + " would you like to battle them?";
+		}
+
+		while (!isQuestionReady()) {
+			questionPanel(question);
+		}
+
+		if (answer.equals("No")) {
 			/*
-			 * Uses the results of the mode setting to determine which question
-			 * to ask the user.
+			 * If the player has passed the 4th row of the Kingdom, their new
+			 * position will be randomly generated based upon the dice number
+			 * plus the value of mode. If they are within the first 4 rows they
+			 * will only retreat 1 space backwards.
 			 */
-			if (mode == 1) {
-				question = "You have encountered " + opponent.getName() + " would you like to battle them?";
+			if (playerPosition > 5) {
+				move = (((move * dice) % 3) + 1 + mode);
+				playerPosition -= move;
+				player.setPositionRow(playerPosition);
+				statement = "You have retreated " + move + " spaces.";
+				/*
+				 * Prints the final statement after the while statement has
+				 * completed.
+				 */
+				statementPanel(statement);
+				System.out.println(statement);
 			} else {
-				question = "You have been attacked by " + opponent.getName() + " would you like to battle them?";
+				move = 1;
+				playerPosition -= move;
+				player.setPositionRow(playerPosition);
+				statement = "You have retreated " + move + " space.";
+				/*
+				 * Prints the final statement after the while statement has
+				 * completed.
+				 */
+				statementPanel(statement);
+				System.out.println(statement);
 			}
-			
-		while(!isQuestionReady()){
-		questionPanel(question);}
 
-			if (answer.equals("No")) {
+		} else if (answer.equalsIgnoreCase("Yes")) {
+			/*
+			 * if the result of the battle is 0, indicating a tie and the player
+			 * engaged the battle, they move backwards 1 space.
+			 */
+			if (result == 0 && mode == 1) {
+				playerPosition -= 1;
+				player.setPositionRow(playerPosition);
+				statement = "You and " + opponent.getName() + " have tied, you have retreated one space.";
 				/*
-				 * If the player has passed the 4th row of the Kingdom, their
-				 * new position will be randomly generated based upon the dice
-				 * number plus the value of mode. If they are within the first 4
-				 * rows they will only retreat 1 space backwards.
+				 * Prints the final statement after the while statement has
+				 * completed.
 				 */
-				if (playerPosition > 5) {
-					move = (((move * dice) % 3) + 1 + mode);
-					playerPosition -= move;
-					player.setPositionRow(playerPosition);
-					statement = "You have retreated " + move + " spaces.";
-				} else {
-					move = 1;
-					playerPosition -= move;
-					player.setPositionRow(playerPosition);
-					statement = "You have retreated " + move + " space.";
-				}
-				
+				statementPanel(statement);
+				System.out.println(statement);
+			}
+			/*
+			 * if the result of the battle is 0 for a tie and the player was
+			 * attacked, they move forward 1 space.
+			 */
+			else if (result == 0 && mode == 0) {
+				playerPosition += 1;
+				player.setPositionRow(playerPosition);
+				statement = "You and " + opponent.getName() + " have tied, you have advance one space.";
+				/*
+				 * Prints the final statement after the while statement has
+				 * completed.
+				 */
+				statementPanel(statement);
+				System.out.println(statement);
+			}
+			/*
+			 * if the result is a positive number, the player one the battle and
+			 * they advance a randomly determined number of spaces.
+			 */
+			else if (result > 0 ){
 
-			} else if (answer.equalsIgnoreCase("Yes")) {
-				/*
-				 * if the result of the battle is 0, indicating a tie and the
-				 * player engaged the battle, they move backwards 1 space.
-				 */
-				if (result == 0 && mode == 1) {
-					playerPosition -= 1;
-					player.setPositionRow(playerPosition);
-					statement = "You and " + opponent.getName() + " have tied, you have retreated one space.";
-				}
-				/*
-				 * if the result of the battle is 0 for a tie and the player was
-				 * attacked, they move forward 1 space.
-				 */
-				else if (result == 0 && mode == 0) {
-					playerPosition += 1;
-					player.setPositionRow(playerPosition);
-					statement = "You and " + opponent.getName() + " have tied, you have advance one space.";
-				}
-				/*
-				 * if the result is a positive number, the player one the battle
-				 * and they advance a randomly determined number of spaces.
-				 */
-				else if (result > 0) {
-					
+					playerHealth = player.getHealth();
+					playerHealth += (rand.nextInt(5) + 1);
+					player.setHealth(playerHealth);
+					statement = "You have won this round and increased your health to " + player.getHealth();
 					/*
-					 * Checks if the results are less than -6 or greater than 6,
-					 * if they are the modulus is subtracted from the player's
-					 * health. If they are not then the results are subtracted
-					 * from the players health.
+					 * Prints the final statement after the while statement has
+					 * completed.
 					 */
-					if ( result > 6) {
-						playerHealth = player.getHealth();
-						playerHealth += result % 5 + mode;
-						player.setHealth(playerHealth);
-						statement = "You have won this round and increased your health to " + player.getHealth();
+					statementPanel(statement);
+					System.out.println(statement);
 
-					} else {
-						playerHealth = player.getHealth();
-						playerHealth += result;
-						player.setHealth(playerHealth);
-						statement = "You have lost this round and decreased your health to " + player.getHealth();
-					}
-
-				} else {
-					if ( result < -6) {
-						playerHealth = player.getHealth();
-						playerHealth += result % 5;
-						player.setHealth(playerHealth);
-						
-					} else {
-						playerHealth = player.getHealth();
-						playerHealth += result;
-						player.setHealth(playerHealth);
-					}
+				}  else {
+					playerHealth = player.getHealth();
+					playerHealth -= (rand.nextInt(5) - 1);
+					player.setHealth(playerHealth);
 					/*
 					 * creates a statement for the change in the player's
 					 * health. If their health is 0 or less then they are sent
@@ -335,24 +345,23 @@ public class Interaction extends JFrame implements ActionListener {
 						statement = "You have lost the battle and entered the graveyard.";
 					} else {
 						statement = "You have lost this round and decreased your health to " + player.getHealth();
+					}
+					/*
+					 * Prints the final statement after the while statement has
+					 * completed.
+					 */
+					statementPanel(statement);
+					System.out.println(statement);
 
-					} 
 				}
-			} 
-			
-		
-		/*
-		 * Prints the final statement after the while statement has completed.
-		 */
-		statementPanel(statement);
-		System.out.println(statement);
-	}
+			}
+		}
 
 	/*
 	 * Outpost() creates something for the user and returns a statement
 	 * regarding how it impacts them.
 	 */
-	public String Outpost(Characters player, int dice) {
+	public String Outpost(Characters player) {
 
 		/*
 		 * Creates variables for storing the option that the user is presented
@@ -360,6 +369,7 @@ public class Interaction extends JFrame implements ActionListener {
 		 */
 		int option = 0;
 		int reward = 0;
+		int dice = rand.nextInt(20);
 		String object = null;
 		String statement = null;
 		answer = null;
@@ -429,7 +439,7 @@ public class Interaction extends JFrame implements ActionListener {
 		return statement;
 	}
 
-	public void Obstacle(Characters player, int dice) {
+	public void Obstacle(Characters player) {
 
 		/*
 		 * created variables for the player options, questions, answers, and
@@ -439,6 +449,7 @@ public class Interaction extends JFrame implements ActionListener {
 		String statement = null;
 		String question = null;
 		answer = null;
+		int dice = rand.nextInt(20);
 
 		if (dice < 3) {
 			option = dice;
@@ -468,7 +479,7 @@ public class Interaction extends JFrame implements ActionListener {
 			if (isQuestionReady() && getAnswer().equals("Yes")) {
 
 				if ((dice * player.getPositioncolumn()) % 2 == 0) {
-					statement = this.Outpost(player, dice);
+					statement = this.Outpost(player);
 					statementPanel(statement);
 				} else {
 					statement = "The box is empty";
@@ -485,17 +496,16 @@ public class Interaction extends JFrame implements ActionListener {
 			 * the dice is an even number, otherwise the potion is poisonous and
 			 * the player loses health.
 			 */else {
-				 setQuestionReady(false);
-				 
-				 
-				 while (!isQuestionReady()) {
+				setQuestionReady(false);
+
+				while (!isQuestionReady()) {
 					question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
 					questionPanel(question);
-					}
+				}
 
 				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
 					if (((dice * player.getHealth()) % 2) == 0) {
-						statement = this.Outpost(player, dice);
+						statement = this.Outpost(player);
 					} else {
 						// player loses health from the poison
 						player.setHealth(player.getHealth() - 3);
@@ -531,7 +541,8 @@ public class Interaction extends JFrame implements ActionListener {
 		String statement = null;
 		String loser = null;
 		Characters opponent = this.getWinner();
-		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed())) - (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
+		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
+				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
 
 		/*
 		 * checks if there is a player that has arrived in the castle yet. If
@@ -541,9 +552,9 @@ public class Interaction extends JFrame implements ActionListener {
 			loser = opponent.getName();
 			this.setWinner(player);
 		} else {
-			
-				loser = player.getName();
-			}
+
+			loser = player.getName();
+		}
 		/*
 		 * the loser is added to the graveyard and the result of the battle is
 		 * added to the statement.
@@ -563,14 +574,14 @@ public class Interaction extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 
 		Monster monster = new Monster();
-		Characters player1 = new Characters(50, 50, 10, 20, 10, 10, "John 1");
+		Characters player1 = new Characters(50, 0, 10, 20, 10, 10, "John 1");
 		Characters player2 = new Characters(50, 150, 10, 20, 1, 3, "John 2");
 		Interaction gameplay = new Interaction();
 		player2 = monster.randomMonster();
 
 		gameplay.Castle(player2);
-		//	gameplay.Outpost(player1, 17);
-		gameplay.Battle(player1, player2, 15);
+		// gameplay.Outpost(player1, 17);
+		gameplay.Battle(player1, player2);
 	}
 
 }
