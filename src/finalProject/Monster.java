@@ -47,7 +47,7 @@ public class Monster {
 		dexterity = rand.nextInt(20) + 10;
 		speed = rand.nextInt(20) + 10;
 		positionRow = 6;
-		positionColumn = rand.nextInt(29) + 1;
+		positionColumn = 6;
 		monsterList.add(new Characters(health, strength, dexterity, speed, positionRow, positionColumn, name));
 		name = "Dragon2";
 		health = rand.nextInt(50) + 15;

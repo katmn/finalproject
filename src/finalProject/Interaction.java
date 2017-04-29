@@ -220,6 +220,7 @@ public class Interaction extends JFrame implements ActionListener {
 		// variables to track and modify player attributes.
 		int playerPosition = player.getPositionRow();
 		int playerHealth = player.getHealth();
+		int healthPoints = (rand.nextInt(6) + 1);
 		int dice = rand.nextInt(20);
 
 		// sets the outcome of the battle
@@ -317,45 +318,45 @@ public class Interaction extends JFrame implements ActionListener {
 			 * if the result is a positive number, the player one the battle and
 			 * they advance a randomly determined number of spaces.
 			 */
-			else if (result > 0 ){
+			else if (result > 0) {
 
-					playerHealth = player.getHealth();
-					playerHealth += (rand.nextInt(5) + 1);
-					player.setHealth(playerHealth);
-					statement = "You have won this round and increased your health to " + player.getHealth();
-					/*
-					 * Prints the final statement after the while statement has
-					 * completed.
-					 */
-					statementPanel(statement);
-					System.out.println(statement);
+				playerHealth = player.getHealth();
+				playerHealth += healthPoints;
+				player.setHealth(playerHealth);
+				statement = "You have won this round and increased your health " + healthPoints + " points.";
+				/*
+				 * Prints the final statement after the while statement has
+				 * completed.
+				 */
+				statementPanel(statement);
+				System.out.println(statement);
 
-				}  else {
-					playerHealth = player.getHealth();
-					playerHealth -= (rand.nextInt(5) - 1);
-					player.setHealth(playerHealth);
-					/*
-					 * creates a statement for the change in the player's
-					 * health. If their health is 0 or less then they are sent
-					 * to the graveyard.
-					 */ if (playerHealth < 1) {
-						graveyard.add(player.getName());
-						player.setPositionRow(0);
-						player.setPositionRow(0);
-						statement = "You have lost the battle and entered the graveyard.";
-					} else {
-						statement = "You have lost this round and decreased your health to " + player.getHealth();
-					}
-					/*
-					 * Prints the final statement after the while statement has
-					 * completed.
-					 */
-					statementPanel(statement);
-					System.out.println(statement);
-
+			} else {
+				playerHealth = player.getHealth();
+				playerHealth -= healthPoints;
+				player.setHealth(playerHealth);
+				/*
+				 * creates a statement for the change in the player's health. If
+				 * their health is 0 or less then they are sent to the
+				 * graveyard.
+				 */ if (player.getHealth() < 1) {
+					graveyard.add(player.getName());
+					player.setPositionRow(0);
+					player.setPositionRow(0);
+					statement = "You have lost the battle and entered the graveyard.";
+				} else {
+					statement = "You have lost this round and decreased your health " + healthPoints + " points.";
 				}
+				/*
+				 * Prints the final statement after the while statement has
+				 * completed.
+				 */
+				statementPanel(statement);
+				System.out.println(statement);
+
 			}
 		}
+	}
 
 	/*
 	 * Outpost() creates something for the user and returns a statement
@@ -367,34 +368,11 @@ public class Interaction extends JFrame implements ActionListener {
 		 * Creates variables for storing the option that the user is presented
 		 * with and the reward from the outpost they have encountered.
 		 */
-		int option = 0;
-		int reward = 0;
-		int dice = rand.nextInt(20);
+		int option = rand.nextInt(3);
+		int reward = rand.nextInt(5);
 		String object = null;
 		String statement = null;
 		answer = null;
-
-		/*
-		 * if the dice is over the number 4, the reward is set to the modulus of
-		 * the dice divided by 4, so that the reward results are limited to 0,
-		 * 1, 2, 3, and 4.
-		 */
-		if (dice > 5) {
-			reward = dice % 5;
-		} else {
-			reward = dice;
-		}
-
-		/*
-		 * if the dice is over the number 3, the option is set to the modulus of
-		 * the dice divided by 3, so that the option results are limited to 0,
-		 * 1, and 2.
-		 */
-		if (dice > 3) {
-			option = dice % 3;
-		} else {
-			option = dice;
-		}
 
 		/*
 		 * checks that reward is greater that 0, if it is then it will use the
@@ -404,10 +382,10 @@ public class Interaction extends JFrame implements ActionListener {
 		if (reward > 0) {
 
 			/*
-			 * uses even and odd results of the dice to determine whether the
+			 * randomly chooses whether the
 			 * object found if a potion or magic stone.
 			 */
-			if (dice % 2 == 0) {
+			if (rand.nextBoolean()) {
 				object = "a potion";
 			} else {
 				object = "a magical stone";
@@ -445,17 +423,11 @@ public class Interaction extends JFrame implements ActionListener {
 		 * created variables for the player options, questions, answers, and
 		 * statements.
 		 */
-		int option = 0;
+		int option = rand.nextInt(3);
 		String statement = null;
 		String question = null;
 		answer = null;
-		int dice = rand.nextInt(20);
 
-		if (dice < 3) {
-			option = dice;
-		} else {
-			option = dice % 3;
-		}
 		/*
 		 * checks the results of the option calculation, then displays the
 		 * result of the obstacle the player has encountered. the first obstacle
@@ -478,7 +450,7 @@ public class Interaction extends JFrame implements ActionListener {
 			}
 			if (isQuestionReady() && getAnswer().equals("Yes")) {
 
-				if ((dice * player.getPositioncolumn()) % 2 == 0) {
+				if (rand.nextBoolean()) {
 					statement = this.Outpost(player);
 					statementPanel(statement);
 				} else {
@@ -504,7 +476,7 @@ public class Interaction extends JFrame implements ActionListener {
 				}
 
 				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
-					if (((dice * player.getHealth()) % 2) == 0) {
+					if (rand.nextBoolean()) {
 						statement = this.Outpost(player);
 					} else {
 						// player loses health from the poison
@@ -571,17 +543,57 @@ public class Interaction extends JFrame implements ActionListener {
 
 	}
 
+	//	Starts an interaction for the player. Accepts the player list to see where the other players are in the game
+	public void startInteraction(Characters player, ArrayList<Characters> playerList) {
+		Monster monster = new Monster();
+		//	finds a random number for choosing what will occur in the game
+		int option = rand.nextInt(3);
+
+		// checks all of the players in the player list to see if the  another player
+		// is in the same row. If there is someone in that spot the Battle method starts. If not one of the other options is randomly selected.
+		for (Characters character : playerList) {
+			if (!character.getName().equals(player.getName())){
+				if (character.getPositionRow() == (player.getPositionRow())) {
+					if (character.getPositioncolumn() == player.getPositioncolumn()) {
+						this.Battle(player, character);
+						break;
+					}
+			}
+			
+			} else if (option == 0) {
+				this.Obstacle(player);
+				break;
+			} else if (option == 1){
+				this.Outpost(player);
+				break;
+			} else {
+				this.Battle(player, monster.randomMonster());
+				break;
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 
 		Monster monster = new Monster();
-		Characters player1 = new Characters(50, 0, 10, 20, 10, 10, "John 1");
-		Characters player2 = new Characters(50, 150, 10, 20, 1, 3, "John 2");
+		Random rand = new Random();
+		ArrayList<Characters> playerList = new ArrayList<Characters>();
+		Characters player1 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
+				rand.nextInt(20) + 20, 6, 6, "John 1");
+		playerList.add(player1);
+		Characters player2 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
+				rand.nextInt(20) + 20, rand.nextInt(17) + 1, rand.nextInt(29) + 1, "Mike 2");
+		playerList.add(player2);
+		Characters player3 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
+				rand.nextInt(20) + 20, 6, 6, "Sam 3");
+		playerList.add(player3);
+		Characters player4 = new Characters(0, 0, 0,
+				0, 6, 6, "Chris 4");
+		playerList.add(player4);
+		
 		Interaction gameplay = new Interaction();
-		player2 = monster.randomMonster();
 
-		gameplay.Castle(player2);
-		// gameplay.Outpost(player1, 17);
-		gameplay.Battle(player1, player2);
+		gameplay.startInteraction(player4, playerList);
 	}
 
 }
