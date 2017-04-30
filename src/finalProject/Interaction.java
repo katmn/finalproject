@@ -25,60 +25,43 @@ import javax.swing.JTextArea;
  * outpost class, and obstacle class.
  *
  */
-public class Interaction extends JFrame implements ActionListener {
+public class Interaction  {
 	// creates a String array list for holding the names of players of have died
 	// in the game
 	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
 	private Characters winner = new Characters();
-	private String answer = null;
+	/*private String answer = null;*/
 	private boolean questionReady = false;
 	private Random rand = new Random();
+	private String answer = null;
+	private String statement = null;
+	private String question = null;
+	/**
+	 * @return the statement
+	 */
+	public String getStatement() {
+		return statement;
+	}
 
 	/**
-	 * @return the questionReady
+	 * @param statement the statement to set
 	 */
-	public boolean isQuestionReady() {
-		return questionReady;
+	public void setStatement(String statement) {
+		this.statement = statement;
 	}
 
 	/**
-	 * @param questionReady
-	 *            the questionReady to set
+	 * @return the question
 	 */
-	public void setQuestionReady(boolean questionReady) {
-		this.questionReady = questionReady;
+	public String getQuestion() {
+		return question;
 	}
 
-	// Brings in components for displaying in the game
-	private JTextArea messageField = new JTextArea();
-	private JButton yesBtn = new JButton("Yes");
-	private JButton noBtn = new JButton("No");
-	private JButton okBtn = new JButton("OK");
-	private JPanel messagePanel = new JPanel(new FlowLayout());
-	private JPanel inputPanel = new JPanel(new FlowLayout());
-	private JPanel questionPanel = new JPanel(new GridLayout(2, 1));
-	private JPanel statementPanel = new JPanel(new GridLayout(2, 1));
-	private JPanel mainPanel = new JPanel(new FlowLayout());
-	private JPanel graveyardPanel = new JPanel(new GridLayout(2, 2));
-
-	private void addListners() {
-		yesBtn.addActionListener(this);
-		noBtn.addActionListener(this);
-		okBtn.addActionListener(this);
-
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		String callingBtn = e.getActionCommand();
-
-		if (callingBtn.equals("OK")) {
-			dispose();
-
-		} else {
-			this.setQuestionReady(true);
-			this.setAnswer(callingBtn);
-
-		}
+	/**
+	 * @param question the question to set
+	 */
+	public void setQuestion(String question) {
+		this.question = question;
 	}
 
 	/**
@@ -95,6 +78,66 @@ public class Interaction extends JFrame implements ActionListener {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+	/**
+	 * @return the questionReady
+	 */
+	public boolean isQuestionReady() {
+		return questionReady;
+	}
+
+	/**
+	 * @param questionReady
+	 *            the questionReady to set
+	 */
+	public void setQuestionReady(boolean questionReady) {
+		this.questionReady = questionReady;
+	}
+
+/*	// Brings in components for displaying in the game
+	private JTextArea messageField = new JTextArea();
+	private JButton yesBtn = new JButton("Yes");
+	private JButton noBtn = new JButton("No");
+	private JButton okBtn = new JButton("OK");
+	private JPanel messagePanel = new JPanel(new FlowLayout());
+	private JPanel inputPanel = new JPanel(new FlowLayout());
+	private JPanel questionPanel = new JPanel(new GridLayout(2, 1));
+	private JPanel statementPanel = new JPanel(new GridLayout(2, 1));
+	private JPanel mainPanel = new JPanel(new FlowLayout());
+
+	private void addListners() {
+		yesBtn.addActionListener(this);
+		noBtn.addActionListener(this);
+		okBtn.addActionListener(this);
+
+	}*/
+
+/*	public void actionPerformed(ActionEvent e) {
+		String callingBtn = e.getActionCommand();
+
+		if (callingBtn.equals("OK")) {
+			dispose();
+
+		} else {
+			this.setQuestionReady(true);
+			this.setAnswer(callingBtn);
+
+		}
+	}*/
+
+	/**
+	 * @return the answer
+	 *//*
+	public String getAnswer() {
+		return answer;
+	}
+
+	*//**
+	 * @param answer
+	 *            the answer to set
+	 *//*
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}*/
 
 	/**
 	 * @return the graveyard
@@ -130,17 +173,17 @@ public class Interaction extends JFrame implements ActionListener {
 	 * Constructor for initializing the Constructor class
 	 */
 	public Interaction() {
-		addListners();
+	/*	addListners();
 		ArrayList<String> graveyard = new ArrayList<String>();
 		this.setSize(600, 200);
-		this.setTitle("Interaction Window");
+		this.setTitle("Interaction Window");*/
 	}
 
 	public String toString() {
 		return "Interaction [graveyard=" + graveyard + ", winner=" + winner + "]";
 	}
 
-	public void statementPanel(String statement) {
+	/*public void statementPanel(String statement) {
 		if (inputPanel != null) {
 			inputPanel.removeAll();
 		}
@@ -157,9 +200,9 @@ public class Interaction extends JFrame implements ActionListener {
 		mainPanel.add(statementPanel);
 		buildPanel();
 
-	}
+	}*/
 
-	private void questionPanel(String question) {
+/*	public void questionPanel(String question) {
 		if (isQuestionReady()) {
 			this.setQuestionReady(false);
 		}
@@ -185,7 +228,7 @@ public class Interaction extends JFrame implements ActionListener {
 		addListners();
 		this.add(mainPanel);
 		setVisible(true);
-	}
+	}*/
 
 
 	/*
@@ -208,9 +251,7 @@ public class Interaction extends JFrame implements ActionListener {
 		int move = 0;
 
 		// variables for storing data that will be displayed for the user.
-		String question = null;
 		answer = null;
-		String statement = null;
 		int mode = 0;
 
 		// determines whether the dice is even or odd.
@@ -226,7 +267,7 @@ public class Interaction extends JFrame implements ActionListener {
 		}
 
 		while (!isQuestionReady()) {
-			questionPanel(question);
+			this.setQuestion(question);
 		}
 
 		if (answer.equals("No")) {
@@ -240,12 +281,8 @@ public class Interaction extends JFrame implements ActionListener {
 				move = (((move * dice) % 3) + 1 + mode);
 				playerPosition -= move;
 				player.setPositionRow(playerPosition);
-				statement = "You have retreated " + move + " spaces.";
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
+				this.setStatement("You have retreated " + move + " spaces.");
+			
 				
 			} else {
 				move = 1;
