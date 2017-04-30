@@ -140,7 +140,7 @@ public class Interaction extends JFrame implements ActionListener {
 		return "Interaction [graveyard=" + graveyard + ", winner=" + winner + "]";
 	}
 
-	private void statementPanel(String statement) {
+	public void statementPanel(String statement) {
 		if (inputPanel != null) {
 			inputPanel.removeAll();
 		}
@@ -566,31 +566,6 @@ public class Interaction extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-
-		Random rand = new Random();
-		ArrayList<Characters> playerList = new ArrayList<Characters>();
-		Characters player1 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
-				rand.nextInt(20) + 20, 6, 6, "John 1");
-		playerList.add(player1);
-		Characters player2 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
-				rand.nextInt(20) + 20, rand.nextInt(17) + 1, rand.nextInt(29) + 1, "Mike 2");
-		playerList.add(player2);
-		Characters player3 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
-				rand.nextInt(20) + 20, 6, 6, "Sam 3");
-		playerList.add(player3);
-		Characters player4 = new Characters(0, 0, 0,
-				0, 6, 6, "Chris 4");
-		playerList.add(player4);
-		
-		Interaction gameplay = new Interaction();
-
-		System.out.println(gameplay.toString());
-		Winnerdisplay winnerWindow = new Winnerdisplay("Winner Display");
-		
-		gameplay.startInteraction(player4, playerList);
-		//	winnerWindow.buildPanels();
-		//winnerWindow.setVisible(true);
-		System.out.println(gameplay.toString());
 	}
 
 }
