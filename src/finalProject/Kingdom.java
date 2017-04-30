@@ -1,13 +1,15 @@
 package finalProject;
 
-public class Kingdom {
+import java.util.ArrayList;
+
+public class Kingdom  {
 	private int numPlayers = 0;
 	private int dice;
 	private int diceRange;
 	private int positionRow;
 	private int positionCol;
 	
-	Characters[] chars = new Characters[numPlayers];
+	private ArrayList<Characters> characters = new ArrayList<Characters>();
 	
 	public int getNumPlayers() {
 		return numPlayers;
@@ -46,25 +48,32 @@ public class Kingdom {
 		this.positionCol = newCol;
 	}
 	
+	public void setCharacters(ArrayList<Characters> characters) {
+		this.characters = characters;
+	}
+	
+	public void addCharacters(Characters characters) {
+		this.characters.add(characters);
+	}
+	
 	
 	public static void main(String[] args)	{
+		Kingdom playGame = new Kingdom();
 		//create an instance of the gameboard
-		GameboardGUI playGame = new GameboardGUI("Adventure Game");
+		GameGUI game = new GameGUI("ADVENTURE GAME");
 		//open game
-		playGame.setVisible(true);
 		//upon opening, create a pop up to enter the number of players
-		//return numPlayers
-		
 		//create characters
-		
-		//spawn in ALL characters
-		 
-		
-		
+		game.setVisible(true);
 		//MAIN loop
 		
 		
+		//while(winner != null) {
+		//WHERE CAN I GET WINNER FROM?
+		
 		//iterate through a "turn" loops
+		//display updated info and gameboard to simulate a turn
+		
 			//check player status
 				//if anyone is dead, add to graveyard
 				//if 1 person remains, they win
@@ -75,9 +84,10 @@ public class Kingdom {
 				//move
 				//handle interaction
 				//next player
-			
+		
 			
 		//close gameboard
+		
 		//display stats
 			//winner
 			//number of turns the game lasted
