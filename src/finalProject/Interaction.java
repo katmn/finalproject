@@ -26,44 +26,12 @@ import javax.swing.JTextArea;
  *
  */
 public class Interaction  {
-	// creates a String array list for holding the names of players of have died
-	// in the game
-	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
-	private Characters winner = new Characters();
+
 	/*private String answer = null;*/
 	private boolean questionReady = false;
 	private Random rand = new Random();
 	private String answer = null;
-	private String statement = null;
-	private String question = null;
-	/**
-	 * @return the statement
-	 */
-	public String getStatement() {
-		return statement;
-	}
-
-	/**
-	 * @param statement the statement to set
-	 */
-	public void setStatement(String statement) {
-		this.statement = statement;
-	}
-
-	/**
-	 * @return the question
-	 */
-	public String getQuestion() {
-		return question;
-	}
-
-	/**
-	 * @param question the question to set
-	 */
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-
+	
 	/**
 	 * @return the answer
 	 */
@@ -243,6 +211,8 @@ public class Interaction  {
 		int healthPoints = (rand.nextInt(6) + 1);
 		int dice = rand.nextInt(20);
 
+		this.setStatement(null);
+		this.setQuestion(null);
 		// sets the outcome of the battle
 		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
 				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
@@ -288,12 +258,7 @@ public class Interaction  {
 				move = 1;
 				playerPosition -= move;
 				player.setPositionRow(playerPosition);
-				statement = "You have retreated " + move + " space.";
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
+				this.setStatement("You have retreated " + move + " space.");
 				
 			}
 
@@ -305,12 +270,8 @@ public class Interaction  {
 			if (result == 0 && mode == 1) {
 				playerPosition -= 1;
 				player.setPositionRow(playerPosition);
-				statement = "You and " + opponent.getName() + " have tied, you have retreated one space.";
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
+				this.setStatement("You and " + opponent.getName() + " have tied, you have retreated one space.");
+		
 
 			}
 			/*
@@ -320,13 +281,7 @@ public class Interaction  {
 			else if (result == 0 && mode == 0) {
 				playerPosition += 1;
 				player.setPositionRow(playerPosition);
-				statement = "You and " + opponent.getName() + " have tied, you have advance one space.";
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
-				
+				this.setStatement("You and " + opponent.getName() + " have tied, you have advance one space.");
 			}
 			/*
 			 * if the result is a positive number, the player one the battle and
@@ -337,13 +292,7 @@ public class Interaction  {
 				playerHealth = player.getHealth();
 				playerHealth += healthPoints;
 				player.setHealth(playerHealth);
-				statement = "You have won this round and increased your health " + healthPoints + " points.";
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
-				
+				this.setStatement("You have won this round and increased your health " + healthPoints + " points.");				
 
 			} else {
 				playerHealth = player.getHealth();
@@ -357,15 +306,10 @@ public class Interaction  {
 					graveyard.add(player);
 					player.setPositionRow(0);
 					player.setPositionRow(0);
-					statement = "You have lost the battle and entered the graveyard.";
+					this.setStatement("You have lost the battle and entered the graveyard.");
 				} else {
-					statement = "You have lost this round and decreased your health " + healthPoints + " points.";
+					this.setStatement("You have lost this round and decreased your health " + healthPoints + " points.");
 				}
-				/*
-				 * Prints the final statement after the while statement has
-				 * completed.
-				 */
-				statementPanel(statement);
 
 			}
 		}
@@ -385,6 +329,7 @@ public class Interaction  {
 		int reward = rand.nextInt(5);
 		String object = null;
 		String statement = null;
+		this.setStatement(null);
 		answer = null;
 
 		/*
@@ -415,7 +360,7 @@ public class Interaction  {
 				// the remaining option advances the players position.
 			} else {
 				player.setPositionRow(player.getPositionRow() + reward);
-				statement = "You have found a portal that advances you " + reward + " places.";
+				statement ="You have found a portal that advances you " + reward + " places.";
 			}
 		} else {
 			statement = "You found a rabbit, but you scared it and it has run away.";
@@ -426,7 +371,7 @@ public class Interaction  {
 		 * statement for the game.
 		 */
 		
-		statementPanel(statement);
+		this.setStatement(statement);
 		return statement;
 	}
 
@@ -437,9 +382,9 @@ public class Interaction  {
 		 * statements.
 		 */
 		int option = rand.nextInt(3);
-		String statement = null;
-		String question = null;
 		answer = null;
+		this.setStatement(null);
+		this.setQuestion(null);
 
 		/*
 		 * checks the results of the option calculation, then displays the
@@ -448,8 +393,7 @@ public class Interaction  {
 		 */
 		if (option == 0) {
 			player.setHealth(player.getHealth() - 3);
-			statement = "You have stepped on a poison arrow, you have lost 3 health points";
-			statementPanel(statement);
+			this.setStatement("You have stepped on a poison arrow, you have lost 3 health points");
 
 			/*
 			 * option 1 is a box that uses Outpost() to help determine the
@@ -458,21 +402,18 @@ public class Interaction  {
 		} else if (option == 1) {
 			setQuestionReady(false);
 			while (!isQuestionReady()) {
-				question = "You have found a mysterious box, would you like to open it?";
-				questionPanel(question);
+				this.setQuestion("You have found a mysterious box, would you like to open it?");
 			}
 			if (isQuestionReady() && getAnswer().equals("Yes")) {
 
 				if (rand.nextBoolean()) {
-					statement = this.Outpost(player);
-					statementPanel(statement);
+					this.setStatement(this.Outpost(player));
 				} else {
-					statement = "The box is empty";
-					statementPanel(statement);
+					this.setStatement("The box is empty");
 				}
 
 			} else if (isQuestionReady() && getAnswer().equalsIgnoreCase("No")) {
-				statement = "Then the box remains a mystery.";
+				this.setStatement("Then the box remains a mystery.");
 
 			}
 
@@ -484,13 +425,12 @@ public class Interaction  {
 				setQuestionReady(false);
 
 				while (!isQuestionReady()) {
-					question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
-					questionPanel(question);
+					this.setQuestion("You have encountered a witch, they offer a magic potion. Will you drink it?");
 				}
 
 				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
 					if (rand.nextBoolean()) {
-						statement = this.Outpost(player);
+						this.setStatement(this.Outpost(player));
 					} else {
 						// player loses health from the poison
 						player.setHealth(player.getHealth() - 3);
@@ -500,19 +440,17 @@ public class Interaction  {
 							graveyard.add(player);
 							player.setPositionRow(0);
 							player.setPositionRow(0);
-							statement = "The potion was poisonous and has killed you, you are now in the graveyard.";
+							this.setStatement("The potion was poisonous and has killed you, you are now in the graveyard.");
 						} else {
-							statement = "The potion was poisonous and your health is now " + player.getHealth();
+							this.setStatement("The potion was poisonous and your health is now " + player.getHealth());
 						}
 					}
 					// returns a statement if the player answers no
 				} else if (answer.equalsIgnoreCase("no")) {
-					statement = "Wise choice, she looked shifty";
+					this.setStatement("Wise choice, she looked shifty");
 				} else {
-					statement = "I do not understand your answer.";
+					this.setStatement("I do not understand your answer.");
 				}
-				statementPanel(statement);
-				// prints the result of the while statement.
 
 			}
 		}
@@ -523,7 +461,6 @@ public class Interaction  {
 		 * creates strings for holding the statement that will display for the
 		 * player and the name of the loser
 		 */
-		String statement = null;
 		Characters loser = null;
 		Characters opponent = this.getWinner();
 		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
@@ -547,13 +484,11 @@ public class Interaction  {
 		graveyard.add(loser);
 
 		if (loser != null) {
-			statement = this.getWinner().getName() + " has conqured the castle. " + loser
-					+ " has gone to the graveyard.";
+			this.setStatement(this.getWinner().getName() + " has conqured the castle. " + loser
+					+ " has gone to the graveyard.");
 		} else {
-			statement = this.getWinner().getName() + " has conqured the castle.";
+			this.setStatement(this.getWinner().getName() + " has conqured the castle.");
 		}
-		statementPanel(statement);
-
 	}
 
 	//	Starts an interaction for the player. Accepts the player list to see where the other players are in the game
@@ -586,21 +521,7 @@ public class Interaction  {
 		}
 	}
 	
-	public boolean nextPlayer(Characters player, ArrayList<Characters> playerList){
-		int playerCount = playerList.size();
-		int gravyardCount = this.getGraveyard().size();
-		
-		if(playerCount == 1 && player.equals(this.getWinner())){
-			return false;
-		} else if (playerCount == gravyardCount){
-			return false;
-		} else if(this.getWinner() != null && gravyardCount == (playerCount - 1)){
-			return false;
-		}else {
-			return true;
-		}
-		
-	}
+
 
 	public static void main(String[] args) {
 	}
