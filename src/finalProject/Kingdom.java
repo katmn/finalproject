@@ -68,7 +68,11 @@ public class Kingdom  {
 		//MAIN loop
 		
 		
-		//while(winner != null) {
+		/*
+		while(nextPlayer) {
+			
+		}
+		*/
 		//WHERE CAN I GET WINNER FROM?
 		
 		//iterate through a "turn" loops
