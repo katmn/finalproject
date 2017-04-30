@@ -575,7 +575,6 @@ public class Interaction extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 
-		Monster monster = new Monster();
 		Random rand = new Random();
 		ArrayList<Characters> playerList = new ArrayList<Characters>();
 		Characters player1 = new Characters(rand.nextInt(50) + 20, rand.nextInt(20) + 20, rand.nextInt(20) + 20,
