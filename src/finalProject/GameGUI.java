@@ -78,7 +78,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	public JPanel character4Pos = new JPanel();
 	
 	public JPanel gameName = new JPanel();
-	public JPanel gameboard = new JPanel(new GridLayout(30, 20));
+	public JPanel gameboard = new JPanel();
 	public JPanel characterInfo = new JPanel(new BorderLayout());
 	public JPanel gameStatus = new JPanel();
 	public JPanel gameplayText = new JPanel();
@@ -180,7 +180,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		charCreationPanel.add(ninthRowPanel);
 		
 		//Gameboard
-		createGameboard();
 		
 		gameNameTextField.setEditable(false);
 		gameName.add(gameNameTextField);
@@ -212,28 +211,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		defaultBtn.addActionListener(this);
 		resetBtn.addActionListener(this);
 		createCharacterBtn.addActionListener(this);
-	}
-
-	public void createGameboard() {
-		for (int i = 0; i < 29; i++) {
-			for (int j = 0; j < 20; j++) {
-				JPanel gameboardPnl = new JPanel();
-				if(i % 2 == 0) {
-					gameboardPnl.setBackground(Color.DARK_GRAY);
-				}
-				else {
-					gameboardPnl.setBackground(Color.GREEN);
-				}
-				gameboard.add(gameboardPnl);
-			}
-		}
-		for(int i = 0; i < 1; i++) {
-			for (int j = 0; j < 20; j++) {
-				JPanel gameboardPnl = new JPanel();
-				gameboardPnl.setBackground(Color.BLACK);
-				gameboard.add(gameboardPnl);
-			}
-		}
 	}
 	
 	public void updateCharacterInfo(Characters character) {
@@ -409,7 +386,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			else {
 				Random rand = new Random();
 				int row = 1;
-				int col = (4 * getCharacterCount()) - 4 + rand.nextInt(4);
+				int col = (5 * getCharacterCount()) - 4 + rand.nextInt(5);
 				Characters newCharacter = new Characters(numHealth, numStrength, numDexterity, numSpeed, row, col, name);
 				addCharacter(newCharacter);
 				System.out.println("CHARACTER CREATED!");
@@ -478,5 +455,12 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+	}
+	
+	public static void main(String[] args) {
+		GameGUI playGame = new GameGUI("ADVENTURE GAME!");
+		playGame.setVisible(true);
+		
+		
 	}
 }
