@@ -71,7 +71,6 @@ public class Interaction extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String callingBtn = e.getActionCommand();
 
-		System.out.println(callingBtn);
 		if (callingBtn.equals("OK")) {
 			dispose();
 
@@ -247,7 +246,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
+				
 			} else {
 				move = 1;
 				playerPosition -= move;
@@ -258,7 +257,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
+				
 			}
 
 		} else if (answer.equalsIgnoreCase("Yes")) {
@@ -275,7 +274,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
+
 			}
 			/*
 			 * if the result of the battle is 0 for a tie and the player was
@@ -290,7 +289,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
+				
 			}
 			/*
 			 * if the result is a positive number, the player one the battle and
@@ -307,7 +306,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
+				
 
 			} else {
 				playerHealth = player.getHealth();
@@ -330,7 +329,6 @@ public class Interaction extends JFrame implements ActionListener {
 				 * completed.
 				 */
 				statementPanel(statement);
-				System.out.println(statement);
 
 			}
 		}
@@ -390,7 +388,7 @@ public class Interaction extends JFrame implements ActionListener {
 		 * writes the resulting statement to the console and returns the
 		 * statement for the game.
 		 */
-		System.out.println(statement);
+		
 		statementPanel(statement);
 		return statement;
 	}
@@ -586,11 +584,13 @@ public class Interaction extends JFrame implements ActionListener {
 		
 		Interaction gameplay = new Interaction();
 
+		System.out.println(gameplay.toString());
 		Winnerdisplay winnerWindow = new Winnerdisplay("Winner Display");
 		
 		gameplay.startInteraction(player4, playerList);
 		//	winnerWindow.buildPanels();
-		winnerWindow.setVisible(true);
+		//winnerWindow.setVisible(true);
+		System.out.println(gameplay.toString());
 	}
 
 }
