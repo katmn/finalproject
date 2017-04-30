@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
-public class protectClose extends JFrame implements ActionListener {
+//Added notes
+public class ProtectCloseGUI extends JFrame implements ActionListener {
 	private JButton yesBtn = new JButton("Yes");
 	private JButton noBtn = new JButton("No");
 	private JLabel msgLbl = new JLabel("Are you sure?");
@@ -16,7 +16,7 @@ public class protectClose extends JFrame implements ActionListener {
 	private ImageIcon yesIcon = new ImageIcon("yes.png");
 	private ImageIcon noIcon = new ImageIcon("no.png");
 	
-	public protectClose() {
+	public ProtectCloseGUI() {
 		super();
 		setSize(200, 200);
 		setLayout(new BorderLayout());
