@@ -28,7 +28,7 @@ import javax.swing.JTextArea;
 public class Interaction extends JFrame implements ActionListener {
 	// creates a String array list for holding the names of players of have died
 	// in the game
-	private ArrayList<String> graveyard = new ArrayList<String>();
+	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
 	private Characters winner = new Characters();
 	private String answer = null;
 	private boolean questionReady = false;
@@ -188,28 +188,6 @@ public class Interaction extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void graveyardPanel() {
-
-		if (graveyard.get(1) != null) {
-			JLabel player1 = new JLabel(graveyard.get(1));
-			graveyardPanel.add(player1);
-
-		}
-		if (graveyard.get(2) != null) {
-			JLabel player2 = new JLabel(graveyard.get(2));
-			graveyardPanel.add(player2);
-		}
-		if (graveyard.get(3) != null) {
-			JLabel player3 = new JLabel(graveyard.get(3));
-			graveyardPanel.add(player3);
-		}
-		if (graveyard.get(4) != null) {
-			JLabel player4 = new JLabel(graveyard.get(4));
-			graveyardPanel.add(player4);
-		}
-		this.add(graveyardPanel);
-		setVisible(true);
-	}
 
 	/*
 	 * Battle() class. Takes in 2 Characters and the dice values to create
@@ -340,7 +318,7 @@ public class Interaction extends JFrame implements ActionListener {
 				 * their health is 0 or less then they are sent to the
 				 * graveyard.
 				 */ if (player.getHealth() < 1) {
-					graveyard.add(player.getName());
+					graveyard.add(player);
 					player.setPositionRow(0);
 					player.setPositionRow(0);
 					statement = "You have lost the battle and entered the graveyard.";
@@ -484,7 +462,7 @@ public class Interaction extends JFrame implements ActionListener {
 						// verifies if the player is still alive. If not, they
 						// are sent to the graveyard.
 						if (player.getHealth() < 1) {
-							graveyard.add(player.getName());
+							graveyard.add(player);
 							player.setPositionRow(0);
 							player.setPositionRow(0);
 							statement = "The potion was poisonous and has killed you, you are now in the graveyard.";
