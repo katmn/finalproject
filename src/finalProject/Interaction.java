@@ -100,7 +100,7 @@ public class Interaction extends JFrame implements ActionListener {
 	/**
 	 * @return the graveyard
 	 */
-	public ArrayList<String> getGraveyard() {
+	public ArrayList<Characters> getGraveyard() {
 		return graveyard;
 	}
 
@@ -108,7 +108,7 @@ public class Interaction extends JFrame implements ActionListener {
 	 * @param graveyard
 	 *            the graveyard to set
 	 */
-	public void setGraveyard(ArrayList<String> graveyard) {
+	public void setGraveyard(ArrayList<Characters> graveyard) {
 		this.graveyard = graveyard;
 	}
 
