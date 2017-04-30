@@ -78,7 +78,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	public JPanel character4Pos = new JPanel();
 	
 	public JPanel gameName = new JPanel();
-	public JPanel gameboard = new JPanel(new GridLayout(30, 20));
+	public JPanel gameboard = new JPanel();
 	public JPanel characterInfo = new JPanel(new BorderLayout());
 	public JPanel gameStatus = new JPanel();
 	public JPanel gameplayText = new JPanel();
@@ -180,7 +180,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		charCreationPanel.add(ninthRowPanel);
 		
 		//Gameboard
-		createGameboard();
 		
 		gameNameTextField.setEditable(false);
 		gameName.add(gameNameTextField);
@@ -212,10 +211,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		defaultBtn.addActionListener(this);
 		resetBtn.addActionListener(this);
 		createCharacterBtn.addActionListener(this);
-	}
-	
-	public void createGameboard() {
-		
 	}
 	
 	public void updateCharacterInfo(Characters character) {
@@ -460,5 +455,12 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+	}
+	
+	public static void main(String[] args) {
+		GameGUI playGame = new GameGUI("ADVENTURE GAME!");
+		playGame.setVisible(true);
+		
+		
 	}
 }
