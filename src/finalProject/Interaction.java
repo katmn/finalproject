@@ -31,7 +31,37 @@ public class Interaction  {
 	private boolean questionReady = false;
 	private Random rand = new Random();
 	private String answer = null;
+	private String statement = null;
+	private String question = null;
 	
+	/**
+	 * @return the statement
+	 */
+	public String getStatement() {
+		return statement;
+	}
+
+	/**
+	 * @param statement the statement to set
+	 */
+	public void setStatement(String statement) {
+		this.statement = statement;
+	}
+
+	/**
+	 * @return the question
+	 */
+	public String getQuestion() {
+		return question;
+	}
+
+	/**
+	 * @param question the question to set
+	 */
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
 	/**
 	 * @return the answer
 	 */
