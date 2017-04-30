@@ -570,7 +570,11 @@ public class Interaction extends JFrame implements ActionListener {
 		
 		Interaction gameplay = new Interaction();
 
+		Winnerdisplay winnerWindow = new Winnerdisplay("Winner Display");
+		
 		gameplay.startInteraction(player4, playerList);
+		//	winnerWindow.buildPanels();
+		winnerWindow.setVisible(true);
 	}
 
 }
