@@ -550,6 +550,22 @@ public class Interaction extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
+	public boolean nextPlayer(Characters player, ArrayList<Characters> playerList){
+		int playerCount = playerList.size();
+		int gravyardCount = this.getGraveyard().size();
+		
+		if(playerCount == 1 && player.equals(this.getWinner())){
+			return false;
+		} else if (playerCount == gravyardCount){
+			return false;
+		} else if(this.getWinner() != null && gravyardCount == (playerCount - 1)){
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
 
 	public static void main(String[] args) {
 
