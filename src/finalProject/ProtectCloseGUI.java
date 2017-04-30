@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
+//Added notes
 public class ProtectCloseGUI extends JFrame implements ActionListener {
 	private JButton yesBtn = new JButton("Yes");
 	private JButton noBtn = new JButton("No");
