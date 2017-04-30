@@ -489,7 +489,7 @@ public class Interaction extends JFrame implements ActionListener {
 		 * player and the name of the loser
 		 */
 		String statement = null;
-		String loser = null;
+		Characters loser = null;
 		Characters opponent = this.getWinner();
 		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
 				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
@@ -499,11 +499,11 @@ public class Interaction extends JFrame implements ActionListener {
 		 * not, the current player is set as the winner.
 		 */
 		if (result > 0) {
-			loser = opponent.getName();
+			loser = opponent;
 			this.setWinner(player);
 		} else {
 
-			loser = player.getName();
+			loser = player;
 		}
 		/*
 		 * the loser is added to the graveyard and the result of the battle is
