@@ -121,6 +121,22 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	
 	private Random rand = new Random();
 	
+	private Characters winner = new Characters();
+	
+	/**
+	 * @return the winner
+	 */
+	public Characters getWinner() {
+		return winner;
+	}
+
+	/**
+	 * @param winner the winner to set
+	 */
+	public void setWinner(Characters winner) {
+		this.winner = winner;
+	}
+
 	private int turn = 0;
 	
 	public GameGUI(String title) {

@@ -114,7 +114,7 @@ import java.util.ArrayList;
 	  
 
 	    public  void buildPanels(){
-	    	Interaction pullWinner = new Interaction();
+	    	GameGUI pullWinner = new GameGUI("New GUI");
 						
 	        Font font1 = new Font("Calibri", Font.BOLD, 24);
 	        titleLbl.setFont(font1);

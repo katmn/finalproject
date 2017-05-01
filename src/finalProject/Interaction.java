@@ -408,14 +408,25 @@ public class Interaction  {
 		 */
 		Characters loser = null;
 		Characters opponent = null;
-		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
+		int result;
+		
+		GameGUI pullWinner = new GameGUI("New Game");
+		
+		if (pullWinner.getWinner() != null){
+			opponent = pullWinner.getWinner();
+		result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
 				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
+		} else{
+			result = 0;
+		}
+			
+			if (result > 0) {
 
 		/*
 		 * checks if there is a player that has arrived in the castle yet. If
 		 * not, the current player is set as the winner.
 		 */
-		if (result > 0) {
+		
 			loser = opponent;
 			//	this.setWinner(player);
 		} else {

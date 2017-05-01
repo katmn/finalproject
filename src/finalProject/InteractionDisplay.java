@@ -15,7 +15,7 @@ public class InteractionDisplay extends JFrame implements ActionListener  {
 	// creates a String array list for holding the names of players of have died
 	// in the game
 	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
-	private Characters winner = new Characters();
+	
 	
 	//	JFrame variables
 	private JTextArea messageField = new JTextArea();
