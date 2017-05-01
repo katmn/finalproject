@@ -9,7 +9,6 @@ import java.util.*;
 import javax.swing.*;
 
 public class GameGUI extends JFrame implements ActionListener, WindowListener {
-	
 	//=======================GAME SETUP==============================================================
 	private JTextField playerPromptField = new JTextField("How many players?");
 	private JTextField playerNumField = new JTextField(" - ");
@@ -50,8 +49,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	private JButton dexterityAddBtn = new JButton("+");
 	private JButton speedSubtractBtn = new JButton("-");
 	private JButton speedAddBtn = new JButton("+");
-	private JButton defaultBtn = new JButton("Default");
-	private JButton resetBtn = new JButton("Reset");
+	private JButton defaultStatsBtn = new JButton("Default");
+	private JButton resetStatsBtn = new JButton("Reset");
 	private JButton createCharacterBtn = new JButton("Create Character");
 	
 	private JPanel charCreationPanel = new JPanel(new GridLayout(9, 1));
@@ -78,16 +77,51 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	public JPanel character4Pos = new JPanel();
 	
 	public JPanel gameName = new JPanel();
-	public JPanel gameboard = new JPanel();
+	public JPanel turnPanel = new JPanel(new BorderLayout());
 	public JPanel characterInfo = new JPanel(new BorderLayout());
 	public JPanel gameStatus = new JPanel();
 	public JPanel gameplayText = new JPanel();
 	
-	public JTextField gameNameTextField = new JTextField("GOAL: Fight your way to the castle at the bottom of the board!!");
 	public JTextField charInfo = new JTextField();
 	public JTextField charStatus = new JTextField();
+	public JTextField nextPlayerField = new JTextField("Next Player's Turn!");
+
+	public JButton rollBtn = new JButton("Roll");
 	
+	public JTextArea gameNameTextField = new JTextArea("GOAL: Fight your way to the castle!\nThe castle is located at Row 40");
 	public JTextArea charStats = new JTextArea();
+	
+	//=======================MOVE=====================================================================
+	public JPanel movePanel = new JPanel(new GridLayout(6, 1));
+	public JPanel firstMovePanel = new JPanel(new FlowLayout());
+	public JPanel secondMovePanel = new JPanel(new FlowLayout());
+	public JPanel thirdMovePanel = new JPanel(new FlowLayout());
+	public JPanel forthMovePanel = new JPanel(new FlowLayout());
+	public JPanel fifthMovePanel = new JPanel(new FlowLayout());
+	public JPanel sixthMovePanel = new JPanel(new FlowLayout());
+	
+	public JTextField rolledTextField = new JTextField("You rolled: ");
+	public JTextField rolledNumTextField = new JTextField("0");
+	public JTextField moveDownTextField = new JTextField("Move down: ");
+	public JTextField moveDownNumTextField = new JTextField("0");
+	public JTextField moveRightTextField = new JTextField("Move right: ");
+	public JTextField moveRightNumTextField = new JTextField("0");
+	public JTextField moveLeftTextField = new JTextField("Move left: ");
+	public JTextField moveLeftNumTextField = new JTextField("0");
+	
+	public JButton moveDownSubtractBtn = new JButton("-");
+	public JButton moveDownAddBtn = new JButton("+");
+	public JButton moveRightSubtractBtn = new JButton("-");
+	public JButton moveRightAddBtn = new JButton("+");
+	public JButton moveLeftSubtractBtn = new JButton("-");
+	public JButton moveLeftAddBtn = new JButton("+");
+	public JButton defaultMoveBtn = new JButton("Default");
+	public JButton resetMoveBtn = new JButton("Reset");
+	public JButton moveBtn = new JButton("Move");
+	
+	private Random rand = new Random();
+	
+	private int turn = 0;
 	
 	public GameGUI(String title) {
 		super(title);
@@ -164,8 +198,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		seventhRowPanel.add(numSpeedField);
 		seventhRowPanel.add(speedAddBtn);
 		
-		eighthRowPanel.add(defaultBtn);
-		eighthRowPanel.add(resetBtn);
+		eighthRowPanel.add(defaultStatsBtn);
+		eighthRowPanel.add(resetStatsBtn);
 		
 		ninthRowPanel.add(createCharacterBtn);
 		
@@ -184,12 +218,56 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		gameNameTextField.setEditable(false);
 		gameName.add(gameNameTextField);
 		
+		nextPlayerField.setEditable(false);
+		
+		turnPanel.setSize(500, 500);
+		turnPanel.add(nextPlayerField, BorderLayout.NORTH);
+		turnPanel.add(rollBtn, BorderLayout.CENTER);
+		
 		entireGameboardPanel.add(gameName, BorderLayout.NORTH);
-		entireGameboardPanel.add(gameboard, BorderLayout.CENTER);
+		entireGameboardPanel.add(turnPanel, BorderLayout.CENTER);
 		entireGameboardPanel.add(characterInfo, BorderLayout.WEST);
 		entireGameboardPanel.add(gameStatus, BorderLayout.EAST);
 		entireGameboardPanel.add(gameplayText, BorderLayout.SOUTH);
 		
+		//Turn movement
+		rolledTextField.setEditable(false);
+		rolledNumTextField.setEditable(false);
+		firstMovePanel.add(rolledTextField);
+		firstMovePanel.add(rolledNumTextField);
+		
+		moveDownTextField.setEditable(false);
+		moveDownNumTextField.setEditable(false);
+		secondMovePanel.add(moveDownTextField);
+		secondMovePanel.add(moveDownSubtractBtn);
+		secondMovePanel.add(moveDownNumTextField);
+		secondMovePanel.add(moveDownAddBtn);
+		
+		moveRightTextField.setEditable(false);
+		moveRightNumTextField.setEditable(false);
+		thirdMovePanel.add(moveRightTextField);
+		thirdMovePanel.add(moveRightSubtractBtn);
+		thirdMovePanel.add(moveRightNumTextField);
+		thirdMovePanel.add(moveRightAddBtn);
+		
+		moveLeftTextField.setEditable(false);
+		moveLeftNumTextField.setEditable(false);
+		forthMovePanel.add(moveLeftTextField);
+		forthMovePanel.add(moveLeftSubtractBtn);
+		forthMovePanel.add(moveLeftNumTextField);
+		forthMovePanel.add(moveLeftAddBtn);
+		
+		fifthMovePanel.add(defaultMoveBtn);
+		fifthMovePanel.add(resetMoveBtn);
+		
+		sixthMovePanel.add(moveBtn);
+		
+		movePanel.add(firstMovePanel);
+		movePanel.add(secondMovePanel);
+		movePanel.add(thirdMovePanel);
+		movePanel.add(forthMovePanel);
+		movePanel.add(fifthMovePanel);
+		movePanel.add(sixthMovePanel);
 	}
 
 	public void addActionListeners() {
@@ -208,15 +286,26 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		dexterityAddBtn.addActionListener(this);
 		speedSubtractBtn.addActionListener(this);
 		speedAddBtn.addActionListener(this);
-		defaultBtn.addActionListener(this);
-		resetBtn.addActionListener(this);
+		defaultStatsBtn.addActionListener(this);
+		resetStatsBtn.addActionListener(this);
 		createCharacterBtn.addActionListener(this);
+		//TurnPanel
+		rollBtn.addActionListener(this);
+		moveDownSubtractBtn.addActionListener(this);
+		moveDownAddBtn.addActionListener(this);
+		moveRightSubtractBtn.addActionListener(this);
+		moveRightAddBtn.addActionListener(this);
+		moveLeftSubtractBtn.addActionListener(this);
+		moveLeftAddBtn.addActionListener(this);
+		defaultMoveBtn.addActionListener(this);
+		resetMoveBtn.addActionListener(this);
+		moveBtn.addActionListener(this);
 	}
 	
 	public void updateCharacterInfo(Characters character) {
-		charInfo.setText("Player:" + character.getName());
-		charStats.setText("HEALTH: "+ character.getHealth() +"\nSTRENGTH: "+ character.getStrength() +"\nDEXTERITY: "+ character.getDexterity() +"\nSPEED: "+ character.getSpeed() +"\n");
-		charStatus.setText("Alive");
+		charInfo.setText("PLAYER:" + character.getName());
+		charStats.setText("HEALTH: "+ character.getHealth() +"\nSTRENGTH: "+ character.getStrength() +"\nDEXTERITY: "+ character.getDexterity() +"\nSPEED: "+ character.getSpeed() +"\nROW: " + character.getPositionRow() + "\nCOLUMN: " + character.getPositioncolumn());
+		charStatus.setText("STATUS: ALIVE");
 	
 		charInfo.setEditable(false);
 		charStats.setEditable(false);
@@ -254,6 +343,11 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		int numDexterity = Integer.parseInt(numDexterityField.getText());
 		int numSpeed = Integer.parseInt(numSpeedField.getText());
 		String name = enterNameField.getText();
+		int rolled = Integer.parseInt(rolledNumTextField.getText());
+		int moveDown = Integer.parseInt(moveDownNumTextField.getText());
+		int moveRight = Integer.parseInt(moveRightNumTextField.getText());
+		int moveLeft = Integer.parseInt(moveLeftNumTextField.getText());
+		int totalRoll = moveRight + moveLeft + moveDown + rolled;
 		
 		if (callingBtn.equals("1")) {
 			playerNumField.setText("1");
@@ -365,14 +459,14 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				numSpeedField.setText(numSpeed + "");
 			}
 		}
-		else if(src == defaultBtn) {
+		else if(src == defaultStatsBtn) {
 			numPointsField.setText("0");
 			numHealthField.setText("50");
 			numStrengthField.setText("30");
 			numDexterityField.setText("30");
 			numSpeedField.setText("30");
 		}
-		else if(src == resetBtn) {
+		else if(src == resetStatsBtn) {
 			numPointsField.setText("40");
 			numHealthField.setText("40");
 			numStrengthField.setText("20");
@@ -384,9 +478,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				//do nothing
 			}
 			else {
-				Random rand = new Random();
 				int row = 1;
-				int col = (5 * getCharacterCount()) - 4 + rand.nextInt(5);
+				int col = (5 * getCharacterCount()) - 5 + rand.nextInt(5);
 				Characters newCharacter = new Characters(numHealth, numStrength, numDexterity, numSpeed, row, col, name);
 				addCharacter(newCharacter);
 				System.out.println("CHARACTER CREATED!");
@@ -409,15 +502,136 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 					super.setVisible(true);
 				}
 				else {
-					super.setSize(1500, 1000);
+					super.setSize(1000, 800);
 					updateCharacterInfo(characters.get(0));
 					super.add(entireGameboardPanel);
 					super.setVisible(true);
 				}
 			}
 		}
+		else if(callingBtn.equals("Roll")) {
+			super.setVisible(false);
+			entireGameboardPanel.remove(turnPanel);
+			int roll = rand.nextInt(6) + 1;
+			rolledNumTextField.setText(roll + "");
+			entireGameboardPanel.add(movePanel, BorderLayout.CENTER);
+			super.setVisible(true);
+			System.out.println("Player has rolled");
+		}
+		else if(src == moveDownSubtractBtn) {
+			if(moveDown == 0) {
+				//do nothing
+			}
+			else {
+				moveDown -= 1;
+				moveDownNumTextField.setText(moveDown + "");
+				rolled += 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == moveDownAddBtn) {
+			int currentRow = characters.get(turn % getNumPlayers()).getPositionRow();
+			if(rolled == 0 || (currentRow + moveDown) > 40) {
+				//do nothing
+			}
+			else {
+				moveDown += 1;
+				moveDownNumTextField.setText(moveDown + "");
+				rolled -= 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == moveRightSubtractBtn) {
+			if(moveRight == 0) {
+				//do nothing
+			}
+			else {
+				moveRight -= 1;
+				moveRightNumTextField.setText(moveRight + "");
+				rolled += 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == moveRightAddBtn) { 
+			int currentCol = characters.get(turn % getNumPlayers()).getPositioncolumn();
+			if(rolled == 0 || (currentCol + moveRight) > 18) {
+				//do nothing
+			}
+			else {
+				moveRight += 1;
+				moveRightNumTextField.setText(moveRight + "");
+				rolled -= 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == moveLeftSubtractBtn) {
+			if(moveLeft == 0) {
+				//do nothing
+			}
+			else {
+				moveLeft -= 1;
+				moveLeftNumTextField.setText(moveLeft + "");
+				rolled += 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == moveLeftAddBtn) {
+			int currentCol = characters.get(turn % getNumPlayers()).getPositioncolumn();
+			if(rolled == 0 || (currentCol - moveLeft) < 1) {
+				//do nothing
+			}
+			else {
+				moveLeft += 1;
+				moveLeftNumTextField.setText(moveLeft + "");
+				rolled -= 1;
+				rolledNumTextField.setText(rolled + "");
+			}
+		}
+		else if(src == defaultMoveBtn) {
+			moveDownNumTextField.setText(totalRoll + "");
+			moveRightNumTextField.setText("0");
+			moveLeftNumTextField.setText("0");
+			rolledNumTextField.setText("0");
+		}
+		else if(src == resetMoveBtn) {
+			rolledNumTextField.setText(totalRoll + "");
+			moveDownNumTextField.setText("0");
+			moveRightNumTextField.setText("0");
+			moveLeftNumTextField.setText("0");
+		}
+		else if(src == moveBtn) {
+			if(rolled == 0) {
+				//character moves row, col
+				characters.get(turn % getNumPlayers()).setPositionRow(characters.get(turn % getNumPlayers()).getPositionRow() + moveDown);
+				characters.get(turn % getNumPlayers()).setPositioncolumn(characters.get(turn % getNumPlayers()).getPositioncolumn() + moveRight - moveLeft);
+				System.out.println("Player has moved");
+				
+				//character has interaction
+				Interaction gameplay = new Interaction();
+				gameplay.startInteraction(characters.get(turn % getNumPlayers()), characters);
+				//change center panel to interaction
+				//while(nextPlayer) {continue
+				//if hp == 0
+					//!added to graveyard
+					//add to graveyard
+					//increment turn to skip over dead player's turn
+				//always ends with a statement
+				//the button on that statement will trigger the roll center panel and increment the turn w/ nextTurn();
+				//updateCharacterInfo(characters.get(turn % getNumPlayers))
+				//}
+				//display end panel
+			}
+		}
 	}
 
+	public int getTurn() {
+		return turn;
+	}
+
+	public void nextTurn() {
+		this.turn += 1;
+	}
+	
 	public void addCharacter(Characters character) {
 		characters.add(character);
 	}
@@ -460,7 +674,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	public static void main(String[] args) {
 		GameGUI playGame = new GameGUI("ADVENTURE GAME!");
 		playGame.setVisible(true);
-		
 		
 	}
 }
