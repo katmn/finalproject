@@ -69,7 +69,7 @@ public class InteractionDisplay extends JFrame implements ActionListener  {
 		}
 		gameplay.setQuestionReady(false);
 		gameplay.setAnswer(null);
-		messageField.setText(statement);
+		messageField.setText(gameplay.getStatement());
 		messagePanel.add(messageField);
 		inputPanel.add(okBtn);
 		statementPanel.add(messagePanel);
@@ -89,7 +89,7 @@ public class InteractionDisplay extends JFrame implements ActionListener  {
 		if (inputPanel != null) {
 			inputPanel.removeAll();
 		}
-		messageField.setText(question);
+		messageField.setText(gameplay.getQuestion());
 		messagePanel.add(messageField);
 		inputPanel.add(yesBtn);
 		inputPanel.add(noBtn);

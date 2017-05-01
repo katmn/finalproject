@@ -147,64 +147,9 @@ public class Interaction  {
 	 * Constructor for initializing the Constructor class
 	 */
 	public Interaction() {
-	/*	addListners();
-		ArrayList<String> graveyard = new ArrayList<String>();
-		this.setSize(600, 200);
-		this.setTitle("Interaction Window");*/
-	}
-
-	/*public void statementPanel(String statement) {
-		if (inputPanel != null) {
-			inputPanel.removeAll();
-		}
-		if (messagePanel != null) {
-			messagePanel.removeAll();
-		}
-		this.setQuestionReady(false);
-		this.setAnswer(null);
-		messageField.setText(statement);
-		messagePanel.add(messageField);
-		inputPanel.add(okBtn);
-		statementPanel.add(messagePanel);
-		statementPanel.add(inputPanel);
-		mainPanel.add(statementPanel);
-		buildPanel();
-
-	}*/
-
-/*	public void questionPanel(String question) {
-		if (isQuestionReady()) {
-			this.setQuestionReady(false);
-		}
-		if (getAnswer() != null) {
-			this.setAnswer(null);
-		}
-		if (inputPanel != null) {
-			inputPanel.removeAll();
-		}
-		messageField.setText(question);
-		messagePanel.add(messageField);
-		inputPanel.add(yesBtn);
-		inputPanel.add(noBtn);
-		questionPanel.add(messagePanel);
-		questionPanel.add(inputPanel);
-		mainPanel.add(questionPanel);
-		buildPanel();
+	
 
 	}
-
-	private void buildPanel() {
-		messageField.setEditable(false);
-		addListners();
-		this.add(mainPanel);
-		setVisible(true);
-	}*/
-
-
-	/*
-	 * Battle() class. Takes in 2 Characters and the dice values to create
-	 * combat between players that modifies the players position and health.
-	 */
 	public void Battle(Characters player, Characters opponent) {
 
 		// variables to track and modify player attributes.
