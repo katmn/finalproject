@@ -122,6 +122,22 @@ public class InteractionDisplay extends JFrame implements ActionListener  {
 		}
 		
 	}
+	
+
+	/**
+	 * @return the graveyard
+	 */
+	public ArrayList<Characters> getGraveyard() {
+		return graveyard;
+	}
+
+	/**
+	 * @param graveyard
+	 *            the graveyard to set
+	 */
+	public void setGraveyard(ArrayList<Characters> graveyard) {
+		this.graveyard = graveyard;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

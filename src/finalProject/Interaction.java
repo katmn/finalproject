@@ -137,35 +137,11 @@ public class Interaction  {
 		this.answer = answer;
 	}*/
 
-	/**
-	 * @return the graveyard
-	 */
-	public ArrayList<Characters> getGraveyard() {
-		return graveyard;
-	}
-
-	/**
-	 * @param graveyard
-	 *            the graveyard to set
-	 */
-	public void setGraveyard(ArrayList<Characters> graveyard) {
-		this.graveyard = graveyard;
-	}
 
 	/**
 	 * @return the winner
 	 */
-	public Characters getWinner() {
-		return winner;
-	}
 
-	/**
-	 * @param winner
-	 *            the winner to set
-	 */
-	public void setWinner(Characters winner) {
-		this.winner = winner;
-	}
 
 	/**
 	 * Constructor for initializing the Constructor class
@@ -175,10 +151,6 @@ public class Interaction  {
 		ArrayList<String> graveyard = new ArrayList<String>();
 		this.setSize(600, 200);
 		this.setTitle("Interaction Window");*/
-	}
-
-	public String toString() {
-		return "Interaction [graveyard=" + graveyard + ", winner=" + winner + "]";
 	}
 
 	/*public void statementPanel(String statement) {
@@ -333,7 +305,6 @@ public class Interaction  {
 				 * their health is 0 or less then they are sent to the
 				 * graveyard.
 				 */ if (player.getHealth() < 1) {
-					graveyard.add(player);
 					player.setPositionRow(0);
 					player.setPositionRow(0);
 					this.setStatement("You have lost the battle and entered the graveyard.");
@@ -467,7 +438,6 @@ public class Interaction  {
 						// verifies if the player is still alive. If not, they
 						// are sent to the graveyard.
 						if (player.getHealth() < 1) {
-							graveyard.add(player);
 							player.setPositionRow(0);
 							player.setPositionRow(0);
 							this.setStatement("The potion was poisonous and has killed you, you are now in the graveyard.");
@@ -492,7 +462,7 @@ public class Interaction  {
 		 * player and the name of the loser
 		 */
 		Characters loser = null;
-		Characters opponent = this.getWinner();
+		Characters opponent = null;
 		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
 				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
 
@@ -502,7 +472,7 @@ public class Interaction  {
 		 */
 		if (result > 0) {
 			loser = opponent;
-			this.setWinner(player);
+			//	this.setWinner(player);
 		} else {
 
 			loser = player;
@@ -511,13 +481,13 @@ public class Interaction  {
 		 * the loser is added to the graveyard and the result of the battle is
 		 * added to the statement.
 		 */
-		graveyard.add(loser);
+		//	graveyard.add(loser);
 
 		if (loser != null) {
-			this.setStatement(this.getWinner().getName() + " has conqured the castle. " + loser
+			this.setStatement("place holder" + " has conqured the castle. " + loser
 					+ " has gone to the graveyard.");
 		} else {
-			this.setStatement(this.getWinner().getName() + " has conqured the castle.");
+			this.setStatement("place holder"  + " has conqured the castle.");
 		}
 	}
 
