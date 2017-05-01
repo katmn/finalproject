@@ -69,59 +69,79 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	private ArrayList<Characters> characters = new ArrayList<Characters>();
 	
 	//=======================GAMEBOARD===============================================================
-	public JPanel entireGameboardPanel = new JPanel(new BorderLayout());
+	private JPanel entireGameboardPanel = new JPanel(new BorderLayout());
 	
-	public JPanel character1Pos = new JPanel();
-	public JPanel character2Pos = new JPanel();
-	public JPanel character3Pos = new JPanel();
-	public JPanel character4Pos = new JPanel();
+	private JPanel character1Pos = new JPanel();
+	private JPanel character2Pos = new JPanel();
+	private JPanel character3Pos = new JPanel();
+	private JPanel character4Pos = new JPanel();
 	
-	public JPanel gameName = new JPanel();
-	public JPanel turnPanel = new JPanel(new BorderLayout());
-	public JPanel characterInfo = new JPanel(new BorderLayout());
-	public JPanel gameStatus = new JPanel();
-	public JPanel gameplayText = new JPanel();
+	private JPanel gameName = new JPanel();
+	private JPanel turnPanel = new JPanel(new BorderLayout());
+	private JPanel characterInfo = new JPanel(new BorderLayout());
+	private JPanel gameStatus = new JPanel();
+	private JPanel gameplayText = new JPanel();
 	
-	public JTextField charInfo = new JTextField();
-	public JTextField charStatus = new JTextField();
-	public JTextField nextPlayerField = new JTextField("Next Player's Turn!");
+	private JTextField charInfo = new JTextField();
+	private JTextField charStatus = new JTextField();
+	private JTextField nextPlayerField = new JTextField("Next Player's Turn!");
 
-	public JButton rollBtn = new JButton("Roll");
+	private JButton rollBtn = new JButton("Roll");
 	
-	public JTextArea gameNameTextField = new JTextArea("GOAL: Fight your way to the castle!\nThe castle is located at Row 40");
-	public JTextArea charStats = new JTextArea();
+	private JTextArea gameNameTextField = new JTextArea("GOAL: Fight your way to the castle!\nThe castle is located at Row 40");
+	private JTextArea charStats = new JTextArea();
 	
 	//=======================MOVE=====================================================================
-	public JPanel movePanel = new JPanel(new GridLayout(6, 1));
-	public JPanel firstMovePanel = new JPanel(new FlowLayout());
-	public JPanel secondMovePanel = new JPanel(new FlowLayout());
-	public JPanel thirdMovePanel = new JPanel(new FlowLayout());
-	public JPanel forthMovePanel = new JPanel(new FlowLayout());
-	public JPanel fifthMovePanel = new JPanel(new FlowLayout());
-	public JPanel sixthMovePanel = new JPanel(new FlowLayout());
+	private JPanel movePanel = new JPanel(new GridLayout(6, 1));
+	private JPanel firstMovePanel = new JPanel(new FlowLayout());
+	private JPanel secondMovePanel = new JPanel(new FlowLayout());
+	private JPanel thirdMovePanel = new JPanel(new FlowLayout());
+	private JPanel forthMovePanel = new JPanel(new FlowLayout());
+	private JPanel fifthMovePanel = new JPanel(new FlowLayout());
+	private JPanel sixthMovePanel = new JPanel(new FlowLayout());
 	
-	public JTextField rolledTextField = new JTextField("You rolled: ");
-	public JTextField rolledNumTextField = new JTextField("0");
-	public JTextField moveDownTextField = new JTextField("Move down: ");
-	public JTextField moveDownNumTextField = new JTextField("0");
-	public JTextField moveRightTextField = new JTextField("Move right: ");
-	public JTextField moveRightNumTextField = new JTextField("0");
-	public JTextField moveLeftTextField = new JTextField("Move left: ");
-	public JTextField moveLeftNumTextField = new JTextField("0");
+	private JTextField rolledTextField = new JTextField("You rolled: ");
+	private JTextField rolledNumTextField = new JTextField("0");
+	private JTextField moveDownTextField = new JTextField("Move down: ");
+	private JTextField moveDownNumTextField = new JTextField("0");
+	private JTextField moveRightTextField = new JTextField("Move right: ");
+	private JTextField moveRightNumTextField = new JTextField("0");
+	private JTextField moveLeftTextField = new JTextField("Move left: ");
+	private JTextField moveLeftNumTextField = new JTextField("0");
 	
-	public JButton moveDownSubtractBtn = new JButton("-");
-	public JButton moveDownAddBtn = new JButton("+");
-	public JButton moveRightSubtractBtn = new JButton("-");
-	public JButton moveRightAddBtn = new JButton("+");
-	public JButton moveLeftSubtractBtn = new JButton("-");
-	public JButton moveLeftAddBtn = new JButton("+");
-	public JButton defaultMoveBtn = new JButton("Default");
-	public JButton resetMoveBtn = new JButton("Reset");
-	public JButton moveBtn = new JButton("Move");
+	private JButton moveDownSubtractBtn = new JButton("-");
+	private JButton moveDownAddBtn = new JButton("+");
+	private JButton moveRightSubtractBtn = new JButton("-");
+	private JButton moveRightAddBtn = new JButton("+");
+	private JButton moveLeftSubtractBtn = new JButton("-");
+	private JButton moveLeftAddBtn = new JButton("+");
+	private JButton defaultMoveBtn = new JButton("Default");
+	private JButton resetMoveBtn = new JButton("Reset");
+	private JButton moveBtn = new JButton("Move");
 	
 	private Random rand = new Random();
 	
 	private Characters winner = new Characters();
+	
+	//=======================INTERACTION DISPLAY========================================================
+	// creates a Characters array list for holding the names of players of have died
+		private ArrayList<Characters> graveyard = new ArrayList<Characters>();
+		
+		
+	//	JFrame variables
+	private JTextArea messageField = new JTextArea();
+	private JButton yesBtn = new JButton("Yes");
+	private JButton noBtn = new JButton("No");
+	private JButton okBtn = new JButton("OK");
+	private JPanel messagePanel = new JPanel(new FlowLayout());
+	private JPanel inputPanel = new JPanel(new FlowLayout());
+	private JPanel questionPanel = new JPanel(new GridLayout(2, 1));
+	private JPanel statementPanel = new JPanel(new GridLayout(2, 1));
+	private JPanel mainPanel = new JPanel(new FlowLayout());
+		
+	//	gameplay interaction
+	private Interaction gameplay = new Interaction();
+			
 	
 	/**
 	 * @return the winner
@@ -316,6 +336,10 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		defaultMoveBtn.addActionListener(this);
 		resetMoveBtn.addActionListener(this);
 		moveBtn.addActionListener(this);
+		//Interaction Display
+		yesBtn.addActionListener(this);
+		noBtn.addActionListener(this);
+		okBtn.addActionListener(this);
 	}
 	
 	public void updateCharacterInfo(Characters character) {
@@ -626,6 +650,11 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				Interaction gameplay = new Interaction();
 				gameplay.startInteraction(characters.get(turn % getNumPlayers()), characters);
 				//change center panel to interaction
+				super.setVisible(false);
+				super.remove(movePanel);
+				//RUN SOMETHING TO KNOW WHAT MAIN PANEL CONTAINS
+				super.add(mainPanel, BorderLayout.CENTER);
+				super.setVisible(true);
 				//while(nextPlayer) {continue
 				//if hp == 0
 					//!added to graveyard
@@ -638,8 +667,82 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				//display end panel
 			}
 		}
+		//Interaction Display
+		if (callingBtn.equals("OK")) {
+			dispose();
+
+		} else {
+			gameplay.setQuestionReady(true);
+			gameplay.setAnswer(callingBtn);
+
+		}
+		
 	}
 
+	public void statementPanel(String statement) {
+		if (inputPanel != null) {
+			inputPanel.removeAll();
+		}
+		if (messagePanel != null) {
+			messagePanel.removeAll();
+		}
+		gameplay.setQuestionReady(false);
+		gameplay.setAnswer(null);
+		messageField.setText(gameplay.getStatement());
+		messagePanel.add(messageField);
+		inputPanel.add(okBtn);
+		statementPanel.add(messagePanel);
+		statementPanel.add(inputPanel);
+		mainPanel.add(statementPanel);
+		buildPanel();
+	}
+	public void questionPanel(String question) {
+		if (gameplay.isQuestionReady()) {
+			gameplay.setQuestionReady(false);
+		}
+		if (gameplay.getAnswer() != null) {
+			gameplay.setAnswer(null);
+		}
+		if (inputPanel != null) {
+			inputPanel.removeAll();
+		}
+		messageField.setText(gameplay.getQuestion());
+		messagePanel.add(messageField);
+		inputPanel.add(yesBtn);
+		inputPanel.add(noBtn);
+		questionPanel.add(messagePanel);
+		questionPanel.add(inputPanel);
+		mainPanel.add(questionPanel);
+		buildPanel();
+
+	}
+	private void buildPanel() {
+		messageField.setEditable(false);
+		this.add(mainPanel);
+		setVisible(true);
+	}
+	public boolean nextPlayer(Characters player, ArrayList<Characters> playerList){
+		int playerCount = playerList.size();
+		int gravyardCount = this.getGraveyard().size();
+		
+		if(playerCount == 1 && player.equals(this.getWinner())){
+			return false;
+		} else if (playerCount == gravyardCount){
+			return false;
+		} else if(this.getWinner() != null && gravyardCount == (playerCount - 1)){
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
+	public ArrayList<Characters> getGraveyard() {
+		return graveyard;
+	}
+	public void setGraveyard(ArrayList<Characters> graveyard) {
+		this.graveyard = graveyard;
+	}
+	
 	public int getTurn() {
 		return turn;
 	}
