@@ -374,9 +374,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		defaultMoveBtn.addActionListener(this);
 		resetMoveBtn.addActionListener(this);
 		moveBtn.addActionListener(this);
-		// Interaction Panel
-		yesBtn.addActionListener(this);
-		noBtn.addActionListener(this);
+		// Statement Panel
 		okBtn.addActionListener(this);
 	}
 	
