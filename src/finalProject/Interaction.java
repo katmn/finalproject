@@ -70,15 +70,13 @@ public class Interaction extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String callingBtn = e.getActionCommand();
 		
-		System.out.println(callingBtn);
 		if (callingBtn.equals("OK")) {
 			GameGUI game = new GameGUI("Gui");
-			//	turns interaction panels off
-			this.setVisible(false);
-			game.setTurnFinished(true);
-			//turns game gui panels back on
-			game.setVisible(true);
-
+//			tells GameGUI that the interaction is complete
+			//game.setTurnFinished(true);
+			game.actionPerformed(e);
+			//turns Interaction Window off 
+			this.dispose();
 		} else {
 			this.setQuestionReady(true);
 			this.setAnswer(callingBtn);
