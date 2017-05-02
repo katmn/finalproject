@@ -101,9 +101,9 @@ public class InteractionDisplay extends JFrame implements ActionListener  {
 	}
 
 	private void buildPanel() {
-		messageField.setEditable(false);
+		
 		addListners();
-		this.add(mainPanel);
+		
 		setVisible(true);
 	}
 	
