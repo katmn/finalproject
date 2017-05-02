@@ -645,7 +645,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			gameplay.setAnswer(callingBtn);
 
 		} else if (callingBtn.equals("OK")) {
-			gameplay.setAnswer(callingBtn);
+			System.out.println(callingBtn);
+			super.setVisible(true);
 
 		}
 
