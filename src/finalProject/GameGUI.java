@@ -9,7 +9,21 @@ import java.util.*;
 import javax.swing.*;
 
 public class GameGUI extends JFrame implements ActionListener, WindowListener {
+	//Instance Variables
+	private int numPlayers = 0;
+	private int characterCount = 0;
+	private int turn = 0;
+	private ArrayList<Characters> characters = new ArrayList<Characters>();
+	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
+	private Characters winner = null;
+	private boolean turnFinished = false;
 	
+	//Instance of Random class to get random values
+	private Random rand = new Random();
+	//Instance of Interaction
+	private Interaction gameplay = new Interaction();
+	
+	//Instance JFrame variables by Panel
 	// GAME SETUP==============================================================
 	private JTextField playerPromptField = new JTextField("How many players?");
 	private JTextField playerNumField = new JTextField(" - ");
@@ -24,8 +38,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	private JPanel setupFirstRowPanel = new JPanel(new FlowLayout());
 	private JPanel setupSecondRowPanel = new JPanel(new FlowLayout());
 	private JPanel setupThirdRowPanel = new JPanel(new FlowLayout());
-
-	private int numPlayers = 0;
 
 	// CHARACTER CREATION======================================================
 	private JTextField playerField = new JTextField("Player  ");
@@ -119,46 +131,90 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	//INTERACTION================================================================
 	// Brings in components for displaying in the game
 	private JTextArea messageField = new JTextArea();
-	private JButton yesBtn = new JButton("Yes");
-	private JButton noBtn = new JButton("No");
 	private JButton okBtn = new JButton("OK");
 	private JPanel messagePanel = new JPanel(new FlowLayout());
 	private JPanel inputPanel = new JPanel(new FlowLayout());
 	private JPanel statementPanel = new JPanel(new GridLayout(2, 1));
 	private JPanel mainPanel = new JPanel(new FlowLayout());
 
-	private Random rand = new Random();
-
-	// creates a Characters array list for holding the names of players of have
-	// died
-	private int characterCount = 0;
-	private ArrayList<Characters> characters = new ArrayList<Characters>();
-	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
-	private Characters winner = null;
-
-	// INTERACTION
-	// DISPLAY========================================================
-	private Interaction gameplay = new Interaction();
-	private boolean turnFinished = false;
-
-	/**
-	 * @return the turnFinished
-	 */
+	//ALL ACCESSORS AND MUTATORS
+	//Accessor to determine if the player's turn is finished
 	public boolean isTurnFinished() {
 		return turnFinished;
 	}
-
-	/**
-	 * @param turnFinished
-	 *            the turnFinished to set used in Interaction to indicate the
-	 *            turn is complete after the ok button is pussed
-	 */
+	//Mutator to set if a player's turn is finished
 	public void setTurnFinished(boolean turnFinished) {
 		this.turnFinished = turnFinished;
 	}
+	//Accessor to determine if there is a winner yet
+	public Characters getWinner() {
+		return winner;
+	}
+	//Mutator to set the winner
+	public void setWinner(Characters winner) {
+		this.winner = winner;
+	}
+	//Accessor to get the number of players in the game
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+	//Mutator to set the number of players in the game
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
+	}
+	//Accessor to get the number of players in the game
+	public int getCharacterCount() {
+		return characterCount;
+	}
+	//Mutator to set the number of players in the game
+	public void setCharacterCount(int characterCount) {
+		this.characterCount = characterCount;
+	}
+	//Accessor for all players in the graveyard
+	public ArrayList<Characters> getGraveyard() {
+		return graveyard;
+	}
+	//Mutator to add players to the graveyard
+	public void setGraveyard(ArrayList<Characters> graveyard) {
+		this.graveyard = graveyard;
+	}
+	//Accessor to get what turn it is
+	public int getTurn() {
+		return turn;
+	}
+	//Mutator to move to the next turn
+	public void nextTurn() {
+		this.turn += 1;
+	}
+	//Accessor to get all players in the game
+	public ArrayList<Characters> getCharacters() {
+		return characters;
+	}
+	//Mutator to add a character to the game
+	public void addCharacter(Characters character) {
+		characters.add(character);
+	}
+	
+	//Constructor
+	public GameGUI(String title) {
+		super(title);
+		super.setSize(300, 200);
+		super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(this);
 
+		createPanels();
+		add(setupPanel);
+		addActionListeners();
+
+		playerField.setText("Player " + (getCharacterCount() + 1));
+		setCharacterCount(getCharacterCount() + 1);
+	}
+	
+	//ALL METHODS
+	//Method that sets up ALL panels for later use
 	public void createPanels() {
-		// Setup panel for players
+		// Setup panel to get the number of players
 		playerPromptField.setEditable(false);
 		playerNumField.setEditable(false);
 		setupFirstRowPanel.add(playerPromptField);
@@ -175,8 +231,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		setupPanel.add(setupThirdRowPanel);
 		setupPanel.add(confirmBtn);
 
-		// After confirmBtn is set, panels are replaced with Player creation
-		// panel
+		// After confirmBtn is set, panels are replaced with Player creation panel
 		playerField.setEditable(false);
 		firstRowPanel.add(playerField);
 
@@ -233,7 +288,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		charCreationPanel.add(ninthRowPanel);
 
 		// After character creation panel is finished. Gameboard is initiated
-
 		gameNameTextField.setEditable(false);
 		gameName.add(gameNameTextField);
 
@@ -287,41 +341,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		movePanel.add(forthMovePanel);
 		movePanel.add(fifthMovePanel);
 		movePanel.add(sixthMovePanel);
-
 	}
-
-	/**
-	 * @return the winner
-	 */
-	public Characters getWinner() {
-		return winner;
-	}
-
-	/**
-	 * the winner to set
-	 */
-	public void setWinner(Characters winner) {
-		this.winner = winner;
-	}
-
-	private int turn = 0;
-
-	public GameGUI(String title) {
-		super(title);
-		super.setSize(300, 200);
-		super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-		addWindowListener(this);
-
-		createPanels();
-		add(setupPanel);
-
-		addActionListeners();
-
-		playerField.setText("Player " + (getCharacterCount() + 1));
-		setCharacterCount(getCharacterCount() + 1);
-	}
-
+	
+	//Method to add action listeners to all buttons
 	public void addActionListeners() {
 		// Game Setup
 		onePlayerBtn.addActionListener(this);
@@ -357,7 +379,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		noBtn.addActionListener(this);
 		okBtn.addActionListener(this);
 	}
-
+	
+	//Method to update the character info on the characterInfo panel
 	public void updateCharacterInfo(Characters character) {
 		charInfo.setText("PLAYER:" + character.getName());
 		charStats.setText("HEALTH: " + character.getHealth() + "\nSTRENGTH: " + character.getStrength()
@@ -373,25 +396,11 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		characterInfo.add(charStats, BorderLayout.CENTER);
 		characterInfo.add(charStatus, BorderLayout.SOUTH);
 	}
-
-	public int getNumPlayers() {
-		return numPlayers;
-	}
-
-	public void setNumPlayers(int numPlayers) {
-		this.numPlayers = numPlayers;
-	}
-
-	public int getCharacterCount() {
-		return characterCount;
-	}
-
-	public void setCharacterCount(int characterCount) {
-		this.characterCount = characterCount;
-	}
-
+	
+	//Method that preforms an action any time that a button is pressed
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		//local variables
 		String callingBtn = event.getActionCommand();
 		Object src = event.getSource();
 		int numPoints = Integer.parseInt(numPointsField.getText());
@@ -405,8 +414,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		int moveRight = Integer.parseInt(moveRightNumTextField.getText());
 		int moveLeft = Integer.parseInt(moveLeftNumTextField.getText());
 		int totalRoll = moveRight + moveLeft + moveDown + rolled;
-		// gameplay interaction
-
+		
+		// Setup Buttons
 		if (callingBtn.equals("1")) {
 			playerNumField.setText("1");
 		} else if (callingBtn.equals("2")) {
@@ -424,7 +433,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			super.add(charCreationPanel);
 			super.setVisible(true);
 			setWinner(null);
-		} else if (src == healthSubtractBtn) {
+		} 
+		//Character Creation Buttons
+		else if (src == healthSubtractBtn) { 
 			if (numPoints == 40 || numHealth == 40) {
 				// do nothing
 			} else {
@@ -541,7 +552,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 					super.setVisible(true);
 				}
 			}
-		} else if (callingBtn.equals("Roll")) {
+		}
+		//Turn Button
+		else if (callingBtn.equals("Roll")) { 
 			super.setVisible(false);
 			entireGameboardPanel.remove(turnPanel);
 			int roll = rand.nextInt(6) + 1;
@@ -549,7 +562,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			entireGameboardPanel.add(movePanel, BorderLayout.CENTER);
 			super.setVisible(true);
 			System.out.println("Player has rolled");
-		} else if (src == moveDownSubtractBtn) {
+		} 
+		//Move Buttons
+		else if (src == moveDownSubtractBtn) { 
 			if (moveDown == 0) {
 				// do nothing
 			} else {
@@ -647,19 +662,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			entireGameboardPanel.remove(movePanel);
 			entireGameboardPanel.add(mainPanel, BorderLayout.CENTER);
 			super.setVisible(true);
-
-			// while(nextPlayer) {continue
-			// if hp == 0
-			// !added to graveyard
-			// add to graveyard
-			// increment turn to skip over dead player's turn
-			// always ends with a statement
-			// the button on that statement will trigger the roll center
-			// panel and increment the turn w/ nextTurn();
-			// updateCharacterInfo(characters.get(turn % getNumPlayers))
-			// }
-			// display end panel
-		} else if (callingBtn.equals("OK")) {
+		} else if (callingBtn.equals("OK")) { //Statement Panel Button
 			Characters currentPlayer = characters.get(turn % getNumPlayers());
 			super.setVisible(false);
 			System.out.println(callingBtn);
@@ -677,7 +680,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			
 		}
 	}
-
+	
+	//Method that returns whether there to start another turn
 	public boolean nextPlayer(Characters player, ArrayList<Characters> playerList) {
 		int playerCount = playerList.size();
 		int gravyardCount = this.getGraveyard().size();
@@ -691,32 +695,8 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		}
 
 	}
-
-	public ArrayList<Characters> getGraveyard() {
-		return graveyard;
-	}
-
-	public void setGraveyard(ArrayList<Characters> graveyard) {
-
-		this.graveyard = graveyard;
-	}
-
-	public int getTurn() {
-		return turn;
-	}
-
-	public void nextTurn() {
-		this.turn += 1;
-	}
-
-	public void addCharacter(Characters character) {
-		characters.add(character);
-	}
-
-	public ArrayList<Characters> getCharacters() {
-		return characters;
-	}
-
+	
+	//Method to build the statement panel
 	private void statementPanel(String statement) {
 		if (inputPanel != null) {
 			inputPanel.removeAll();
@@ -735,45 +715,43 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		System.out.println("Statement panel built");
 	}
 	
+	//Auto-generated WindowListener methods
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+		//Protects the window from accidentally being closed.
 		ProtectCloseGUI gui = new ProtectCloseGUI();
 		gui.setVisible(true);
 	}
-
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void windowIconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
+	
+	//Main to play the game
 	public static void main(String[] args) {
-		GameGUI playGame = new GameGUI("ADVENTURE GAME!");
+		//Instance Variable
+		GameGUI playGame = new GameGUI("Kingdom Race: Conquer the Castle!");
+		//Set the GUI to visible so the user can start the game
 		playGame.setVisible(true);
 	}
 }
