@@ -55,7 +55,6 @@ public class Interaction extends JFrame implements ActionListener {
 	private JButton okBtn = new JButton("OK");
 	private JPanel messagePanel = new JPanel(new FlowLayout());
 	private JPanel inputPanel = new JPanel(new FlowLayout());
-	private JPanel questionPanel = new JPanel(new GridLayout(2, 1));
 	private JPanel statementPanel = new JPanel(new GridLayout(2, 1));
 	private JPanel mainPanel = new JPanel(new FlowLayout());
 	
@@ -70,7 +69,7 @@ public class Interaction extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String callingBtn = e.getActionCommand();
-
+		
 		System.out.println(callingBtn);
 		if (callingBtn.equals("OK")) {
 			GameGUI game = new GameGUI("Gui");
@@ -107,6 +106,7 @@ public class Interaction extends JFrame implements ActionListener {
 	 * Constructor for initializing the Constructor class
 	 */
 	public Interaction() {
+		super();
 		addListners();
 		this.setSize(600, 200);
 		this.setTitle("Interaction Window");
@@ -129,33 +129,12 @@ public class Interaction extends JFrame implements ActionListener {
 		statementPanel.add(inputPanel);
 		mainPanel.add(statementPanel);
 		buildPanel();
-
-	}
-
-	private void questionPanel(String question) {
-	
-		if (getAnswer() != null) {
-			this.setAnswer(null);
-		}
-		if (inputPanel != null) {
-			inputPanel.removeAll();
-		}
-		messageField.setText(question);
-		messagePanel.add(messageField);
-		inputPanel.add(yesBtn);
-		inputPanel.add(noBtn);
-		questionPanel.add(messageField);
-		questionPanel.add(inputPanel);
-		mainPanel.add(questionPanel);
-		
-		buildPanel();
-		
-
 	}
 
 	public void buildPanel() {
 		messageField.setEditable(false);
 		addListners();
+		
 		add(mainPanel);
 		setVisible(true);
 	}
@@ -169,58 +148,15 @@ public class Interaction extends JFrame implements ActionListener {
 		// variables to track and modify player attributes.
 		int playerPosition = player.getPositionRow();
 		int playerHealth = player.getHealth();
+		setQuestionReady(false);
 
 		// sets the outcome of the battle
 		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
-				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
-
-		// sets how far the player will move in the game.
-		int move = 0;
-
-		// variables for storing data that will be displayed for the user.
-		String question = null;
-		answer = null;
+				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));		
+		
+		// variables for storing statement that will be displayed for the user.
 		String statement = null;
 
-		/*
-		 * Uses the results of the mode setting to determine which question to
-		 * ask the user.
-		 */
-		if (rand.nextBoolean()) {
-			question = "You have encountered " + opponent.getName() + " would you like to battle them?";
-		} else {
-			question = "You have been attacked by " + opponent.getName() + " would you like to battle them?";
-		}
-
-		while (!isQuestionReady()) {
-			questionPanel(question);
-		}
-
-		if (answer.equals("No")) {
-			/*
-			 * If the player has passed the 4th row of the Kingdom, their new
-			 * position will be randomly generated based upon the dice number
-			 * plus the value of mode. If they are within the first 4 rows they
-			 * will only retreat 1 space backwards.
-			 */
-			if (playerPosition > 5) {
-				move = ((rand.nextInt(3)) + 1);
-				playerPosition -= move;
-				player.setPositionRow(playerPosition);
-				statement = "You have retreated " + move + " spaces.";
-				statementPanel(statement);
-			} else {
-				move = 1;
-				playerPosition -= move;
-				player.setPositionRow(playerPosition);
-				statement = "You have retreated " + move + " space.";
-				statementPanel(statement);
-			}
-
-		} else if (answer.equalsIgnoreCase("Yes")) {
-			/*
-			 * if the result of the battle is 0, indicating a tie, they move backwards 1 space.
-			 */
 			if (result == 0) {
 				playerPosition -= 1;
 				player.setPositionRow(playerPosition);
@@ -232,7 +168,7 @@ public class Interaction extends JFrame implements ActionListener {
 					playerHealth = player.getHealth();
 					playerHealth += rand.nextInt(5) + 1;
 					player.setHealth(playerHealth);
-					statement = "You have won this round and increased your health to " + player.getHealth();
+					statement = "You have won against " + opponent.getName() +" this round and increased your health to " + player.getHealth();
 					statementPanel(statement);
 
 				} else {
@@ -241,12 +177,12 @@ public class Interaction extends JFrame implements ActionListener {
 					playerHealth = player.getHealth();
 					playerHealth -= rand.nextInt(5) + 1;
 					player.setHealth(playerHealth);
-					statement = "You have lost this round and decreased your health to " + player.getHealth();
+					statement = "You have lost this round  " + opponent.getName() + " and decreased your health to " + player.getHealth();
 					statementPanel(statement);
-				}
+				}}
 
-				}
-			}
+				
+			
 
 
 	/*
@@ -310,14 +246,7 @@ public class Interaction extends JFrame implements ActionListener {
 
 	public void Obstacle(Characters player) {
 
-		/*
-		 * created variables for the player options, questions, answers, and
-		 * statements.
-		 */
-		int option = rand.nextInt(3);
-		option = 0;
 		String statement = null;
-		String question = null;
 		answer = null;
 
 		/*
@@ -325,7 +254,7 @@ public class Interaction extends JFrame implements ActionListener {
 		 * result of the obstacle the player has encountered. the first obstacle
 		 * is a poison arrow that subtracts health
 		 */
-		if (option == 0) {
+		if (rand.nextBoolean()) {
 			player.setHealth(player.getHealth() - 3);
 			statement = "You have stepped on a poison arrow, you have lost 3 health points";
 			statementPanel(statement);
@@ -335,60 +264,12 @@ public class Interaction extends JFrame implements ActionListener {
 			 * option 1 is a box that uses Outpost() to help determine the
 			 * outcome.
 			 */
-		} else if (option == 1) {
-			setQuestionReady(false);
-			while (!isQuestionReady()) {
-				question = "You have found a mysterious box, would you like to open it?";
-				questionPanel(question);
-				
-			}
-			if (isQuestionReady() && getAnswer().equals("Yes")) {
-
-				if (rand.nextBoolean()) {
-					statement = this.Outpost(player);
-					statementPanel(statement);
-				} else {
-					statement = "The box is empty";
-					statementPanel(statement);
-				}
-
-			} else if (isQuestionReady() && getAnswer().equalsIgnoreCase("No")) {
-				statement = "Then the box remains a mystery.";
-
+		} else {
+	
+			statement = this.Outpost(player);
+			statementPanel(statement);
 			}
 
-			/*
-			 * option 2 is a witch with a potion, Outpost() is initialized if
-			 * the dice is an even number, otherwise the potion is poisonous and
-			 * the player loses health.
-			 */else {
-				setQuestionReady(false);
-
-				while (!isQuestionReady()) {
-					question = "You have encountered a witch, they offer a magic potion. Will you drink it?";
-					questionPanel(question);
-				
-				}
-
-				if (isQuestionReady() && answer.equalsIgnoreCase("Yes")) {
-					if (rand.nextBoolean()) {
-						statement = this.Outpost(player);
-					} else {
-						// player loses health from the poison
-						player.setHealth(player.getHealth() - 3);
-							statement = "The potion was poisonous and your health is now " + player.getHealth();
-					}
-					// returns a statement if the player answers no
-				} else if (answer.equalsIgnoreCase("no")) {
-					statement = "Wise choice, she looked shifty";
-				} else {
-					statement = "I do not understand your answer.";
-				}
-				statementPanel(statement);
-				// prints the result of the while statement.
-
-			}
-		}
 	}
 
 	public void Castle(Characters player) {
@@ -410,6 +291,8 @@ public class Interaction extends JFrame implements ActionListener {
 		if (result > 0) {
 			loser = opponent;
 			gameboard.setWinner(player);
+			statement = gameboard.getWinner().getName() + " has conqured the castle. " + loser
+					+ " has gone to the graveyard.";
 		} else {
 
 			loser = player;
@@ -420,11 +303,8 @@ public class Interaction extends JFrame implements ActionListener {
 		 */
 
 		if (loser != null) {
-			statement = gameboard.getWinner().getName() + " has conqured the castle. " + loser
-					+ " has gone to the graveyard.";
-		} else {
-			statement = gameboard.getWinner().getName() + " has conqured the castle.";
-		}
+			statement = statement + loser.getName() + " has gone to the graveyard.";
+		} 
 		statementPanel(statement);
 
 	}
@@ -438,7 +318,7 @@ public class Interaction extends JFrame implements ActionListener {
 		int option = rand.nextInt(3);
 		
 		//set to 0 to force the Obstacle option
-		option = 0;
+		//	option = 2;
 
 		// checks all of the players in the player list to see if the another
 		// player
@@ -446,6 +326,9 @@ public class Interaction extends JFrame implements ActionListener {
 		// is in the same row. If there is someone in that spot the Battle
 		// method starts. If not one of the other options is randomly selected.
 
+		if (player.getPositionRow() > 39 ){
+			this.Castle(player);
+		} else {
 		for (Characters character : playerList) {
 
 			if (!character.getName().equals(player.getName())) {
@@ -480,13 +363,14 @@ public class Interaction extends JFrame implements ActionListener {
 			}
 
 		}
+		}
 
 	}
 
 	public static void main(String[] args) {
 
 		Monster monster = new Monster();
-		Characters player1 = new Characters(50, 50, 10, 20, 10, 10, "John 1");
+		Characters player1 = new Characters(50, 50, 10, 20, 40, 40, "John 1");
 		Characters player2 = new Characters(50, 150, 10, 20, 1, 3, "John 2");
 		Interaction gameplay = new Interaction();
 		GameGUI game = new GameGUI("Gui");
