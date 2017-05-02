@@ -659,11 +659,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			// updateCharacterInfo(characters.get(turn % getNumPlayers))
 			// }
 			// display end panel
-		} 
-		else if (callingBtn.equals("Yes") || callingBtn.equals("No")) {
-			gameplay.setAnswer(callingBtn);
-		} 
-		else if (callingBtn.equals("OK")) {
+		} else if (callingBtn.equals("OK")) {
 			Characters currentPlayer = characters.get(turn % getNumPlayers());
 			super.setVisible(false);
 			System.out.println(callingBtn);
@@ -687,8 +683,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		int gravyardCount = this.getGraveyard().size();
 
 		if (playerCount == 1 && player.equals(this.getWinner())) {
-			return false;
-		} else if (playerCount == gravyardCount) {
 			return false;
 		} else if (this.getWinner() != null ) {
 			return false;
