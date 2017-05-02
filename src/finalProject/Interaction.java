@@ -198,22 +198,26 @@ public class Interaction {
 		 */
 		GameGUI gameboard = new GameGUI("Castle");
 		Characters loser = null;
-		Characters opponent = gameboard.getWinner();
-		int result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
+		Characters opponent = null;
+		int result = 0;
+				
+				if(gameboard.getWinner() != null){
+					opponent = gameboard.getWinner();
+					result = ((player.getStrength() * (player.getDexterity() + player.getSpeed()))
 				- (opponent.getStrength() * (opponent.getDexterity() + opponent.getSpeed())));
+					}
 
 		/*
 		 * checks if there is a player that has arrived in the castle yet. If
 		 * not, the current player is set as the winner.
 		 */
-		if (result > 0) {
+		if (result < 0) {
+			loser = player;
+		} else {
+			
 			loser = opponent;
 			gameboard.setWinner(player);
-			setStatement(gameboard.getWinner().getName() + " has conqured the castle. " + loser
-					+ " has gone to the graveyard.");
-		} else {
-
-			loser = player;
+			setStatement(gameboard.getWinner().getName() + " has conqured the castle. ");
 		}
 		/*
 		 * the loser is added to the graveyard and the result of the battle is
