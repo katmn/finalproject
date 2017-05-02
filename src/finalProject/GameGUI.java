@@ -420,10 +420,10 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			setNumPlayers(numPlayersEntered);
 			super.setVisible(false);
 			super.remove(setupPanel);
-
 			super.setSize(300, 400);
 			super.add(charCreationPanel);
 			super.setVisible(true);
+			setWinner(null);
 		} else if (src == healthSubtractBtn) {
 			if (numPoints == 40 || numHealth == 40) {
 				// do nothing
@@ -690,7 +690,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			return false;
 		} else if (playerCount == gravyardCount) {
 			return false;
-		} else if (this.getWinner() != null && gravyardCount == (playerCount - 1)) {
+		} else if (this.getWinner() != null ) {
 			return false;
 		} else {
 			return true;
