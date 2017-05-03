@@ -14,9 +14,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	private int characterCount = 0;
 	private int turn = 0;
 	private ArrayList<Characters> characters = new ArrayList<Characters>();
-	private ArrayList<Characters> graveyard = new ArrayList<Characters>();
 	private Characters winner = null;
 	private boolean turnFinished = false;
+	private boolean displayWinner = true;
 	
 	//Instance of Random class to get random values
 	private Random rand = new Random();
@@ -80,11 +80,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	// GAMEBOARD===============================================================
 	private JPanel entireGameboardPanel = new JPanel(new BorderLayout());
 
-	private JPanel character1Pos = new JPanel();
-	private JPanel character2Pos = new JPanel();
-	private JPanel character3Pos = new JPanel();
-	private JPanel character4Pos = new JPanel();
-
 	private JPanel gameName = new JPanel();
 	private JPanel turnPanel = new JPanel(new BorderLayout());
 	private JPanel characterInfo = new JPanel(new BorderLayout());
@@ -97,7 +92,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 
 	private JButton rollBtn = new JButton("Roll");
 
-	private JTextArea gameNameTextField = new JTextArea("GOAL: Fight your way to the castle!\nThe castle is located at Row 40");
+	private JTextArea gameNameTextField = new JTextArea("GOAL:\nFight your way to the castle!\nThe castle is located at Row 40");
 	private JTextArea charStats = new JTextArea();
 
 	// MOVE=====================================================================
@@ -169,14 +164,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	//Mutator to set the number of players in the game
 	public void setCharacterCount(int characterCount) {
 		this.characterCount = characterCount;
-	}
-	//Accessor for all players in the graveyard
-	public ArrayList<Characters> getGraveyard() {
-		return graveyard;
-	}
-	//Mutator to add players to the graveyard
-	public void setGraveyard(ArrayList<Characters> graveyard) {
-		this.graveyard = graveyard;
 	}
 	//Accessor to get what turn it is
 	public int getTurn() {
@@ -673,25 +660,34 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				super.setVisible(true);
 			}
 			else {
-				System.out.println("failed");
+				entireGameboardPanel.remove(mainPanel);
+				gameplay.setStatement("GAME OVER!\n" + currentPlayer.getName() + " has conquered the Castle and won the game!\nHitting 'OK' will exit the game");
+				statementPanel(gameplay.getStatement());
+				entireGameboardPanel.add(mainPanel);
+				if(displayWinner) {
+					super.setVisible(true);
+					displayWinner = false;
+				}
+				else {
+					System.exit(0);
+				}
 			}
-			
 		}
 	}
 	
 	//Method that returns whether there to start another turn
 	public boolean nextPlayer(Characters player, ArrayList<Characters> playerList) {
 		int playerCount = playerList.size();
-		int gravyardCount = this.getGraveyard().size();
 
-		if (playerCount == 1 && player.equals(this.getWinner())) {
+		if (playerCount == 1 && player.equals(getWinner())) {
 			return false;
-		} else if (this.getWinner() != null ) {
+		} else if (getWinner() != null ) {
+			return false;
+		} else if (characters.get(turn % getNumPlayers()).getPositionRow() > 39) { 
 			return false;
 		} else {
 			return true;
 		}
-
 	}
 	
 	//Method to build the statement panel
