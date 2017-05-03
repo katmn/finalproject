@@ -17,13 +17,13 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	private Characters winner = null;
 	private boolean turnFinished = false;
 	private boolean displayWinner = true;
-	
-	//Instance of Random class to get random values
+
+	//Instance of Random Class to get random values
 	private Random rand = new Random();
-	//Instance of Interaction
+	//Instance of Interaction Class
 	private Interaction gameplay = new Interaction();
 	
-	//Instance JFrame variables by Panel
+	//Instance JFrame variables sorted by Panel
 	// GAME SETUP==============================================================
 	private JTextField playerPromptField = new JTextField("How many players?");
 	private JTextField playerNumField = new JTextField(" - ");
@@ -180,6 +180,14 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 	//Mutator to add a character to the game
 	public void addCharacter(Characters character) {
 		characters.add(character);
+	}
+	//Accessor for displayWinner
+	public boolean isDisplayWinner() {
+		return displayWinner;
+	}
+	//Mutator for displayWinner
+	public void setDisplayWinner(boolean displayWinner) {
+		this.displayWinner = displayWinner;
 	}
 	
 	//Constructor
@@ -629,8 +637,7 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			// This updates the player position correctly
 			currentPlayer.setPositionRow(newRow);
 			currentPlayer.setPositioncolumn(newColumn);
-			System.out.println("Player has moved to row " + currentPlayer.getPositionRow() + " column "
-					+ currentPlayer.getPositioncolumn());
+			System.out.println("Player has moved!");
 			rolledNumTextField.setText("0");
 			moveDownNumTextField.setText("0");
 			moveLeftNumTextField.setText("0");
@@ -640,7 +647,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 			// action listener inside of Interaction will turn the Interaction
 			// panel off and the GameGUI panel on when the OK button is pressed.
 			gameplay.startInteraction(currentPlayer, characters);
-			System.out.println(gameplay.getStatement());
 			statementPanel(gameplay.getStatement());
 			updateCharacterInfo(currentPlayer);
 			
@@ -650,9 +656,9 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		} else if (callingBtn.equals("OK")) { //Statement Panel Button
 			Characters currentPlayer = characters.get(turn % getNumPlayers());
 			super.setVisible(false);
-			System.out.println(callingBtn);
 			if(nextPlayer(currentPlayer, characters)) {
 				nextTurn();
+				System.out.println("Player's turn is done");
 				currentPlayer = characters.get(turn % getNumPlayers());
 				updateCharacterInfo(currentPlayer);
 				entireGameboardPanel.remove(mainPanel);
@@ -664,11 +670,12 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 				gameplay.setStatement("GAME OVER!\n" + currentPlayer.getName() + " has conquered the Castle and won the game!\nHitting 'OK' will exit the game");
 				statementPanel(gameplay.getStatement());
 				entireGameboardPanel.add(mainPanel);
-				if(displayWinner) {
+				if(isDisplayWinner()) {
 					super.setVisible(true);
-					displayWinner = false;
+					setDisplayWinner(false);
 				}
 				else {
+					System.out.println("GAME OVER!");
 					System.exit(0);
 				}
 			}
@@ -706,7 +713,6 @@ public class GameGUI extends JFrame implements ActionListener, WindowListener {
 		statementPanel.add(messagePanel);
 		statementPanel.add(inputPanel);
 		mainPanel.add(statementPanel);
-		System.out.println("Statement panel built");
 	}
 	
 	//Auto-generated WindowListener methods
