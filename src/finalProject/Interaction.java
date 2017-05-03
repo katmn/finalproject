@@ -111,7 +111,6 @@ public class Interaction {
 			player.setHealth(playerHealth);
 			setStatement("You have lost this round  " + opponent.getName() + " and decreased your health to " + player.getHealth());
 		}
-		System.out.println(getStatement());
 	}
 
 	/*
@@ -166,7 +165,6 @@ public class Interaction {
 		 * writes the resulting statement to the console and returns the
 		 * statement for the game.
 		 */
-		System.out.println(getStatement());
 	}
 
 	public void Obstacle(Characters player) {
@@ -188,7 +186,6 @@ public class Interaction {
 		else {
 			this.Outpost(player);
 		}
-		System.out.println(getStatement());
 	}
 
 	public void Castle(Characters player) {
@@ -236,7 +233,6 @@ public class Interaction {
 		// finds a random number for choosing what will occur in the game
 
 		int option = rand.nextInt(3);
-		System.out.println("Option: " + option);
 		//set to 0 to force the Obstacle option
 		//	option = 2;
 
@@ -262,17 +258,14 @@ public class Interaction {
 				} 
 				else if (option == 0) {
 					this.Obstacle(player);
-					System.out.println("Running Obstacle");
 					break;
 				} 
 				else if (option == 1) {
 					this.Outpost(player);
-					System.out.println("Running Outpost");
 					break;
 				} 
 				else {
 					this.Battle(player, monster.randomMonster());
-					System.out.println("Running Battle");
 					break;
 				}
 			}
